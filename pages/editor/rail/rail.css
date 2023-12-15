@@ -1,0 +1,10 @@
+.rail {
+    display: flex;
+    flex-direction: column;
+    max-width: 50px;
+    min-width: 50px;
+    background-color: rgb(24, 24, 85);
+}
+
+.rail button {
+}

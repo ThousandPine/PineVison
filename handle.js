@@ -3,8 +3,30 @@ const { dialog } = require('electron')
 const path = require('node:path')
 const fs = require('fs')
 const addon = require('./build/Release/addon')
-const { send } = require('node:process')
+const { send, eventNames } = require('node:process')
 
+
+ipcMain.on('win:minimize', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    win.minimize()
+})
+
+ipcMain.handle('win:maximize', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    
+    if (win.isMaximized()) {
+        win.unmaximize()
+        return false
+    } else {
+        win.maximize()
+        return true
+    }
+})
+
+ipcMain.on('win:close', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    win.close()
+})
 
 // 记录当前图像信息
 const curImage = {}
@@ -27,7 +49,7 @@ ipcMain.on('image:init', (event) => {
 })
 
 ipcMain.on('image:open', (event) => {
-    
+
     const options = {
         title: '选择图片',
         filters: [
@@ -37,7 +59,7 @@ ipcMain.on('image:open', (event) => {
     }
     const path = dialog.showOpenDialogSync(options)
     const buffer = loadImage(path[0])
-    
+
     sendImageData(event.sender, buffer)
 })
 

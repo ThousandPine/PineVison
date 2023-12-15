@@ -1,5 +1,11 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
+contextBridge.exposeInMainWorld('win', {
+    minimize: () => ipcRenderer.send('win:minimize'),
+    maximize: () =>  ipcRenderer.invoke('win:maximize'),
+    close: () => ipcRenderer.send('win:close')
+})
+
 const img = new Image()
 
 contextBridge.exposeInMainWorld('img', {
@@ -19,6 +25,8 @@ contextBridge.exposeInMainWorld('img', {
     blur: (blur) => ipcRenderer.send('image:blur', blur),
     equalizeHist: () => ipcRenderer.send('image:equalizeHist'),
     curve: (curves) => ipcRenderer.send('image:curve', curves),
+    // 
+    getImage: (layerIndex) => ipcRenderer.invoke('image:get', layerIndex)
 })
 
 ipcRenderer.addListener('image:update', (evnet, imgBuffer) => {

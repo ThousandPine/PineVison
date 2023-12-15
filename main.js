@@ -7,6 +7,9 @@ const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        minWidth: 600,
+        minHeight: 600,
+        frame: false,
         webPreferences: {
             preload: path.join(__dirname, './preload.js')
         }
@@ -14,7 +17,6 @@ const createWindow = () => {
 
     // 加载 index.html
     mainWindow.loadFile('./pages/editor/index.html')
-    // mainWindow.loadFile('./pages/editor/curve/curve.html')
 
     // 打开开发工具
     // mainWindow.webContents.openDevTools()
