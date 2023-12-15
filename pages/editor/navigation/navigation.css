@@ -1,0 +1,12 @@
+.navigation-bar {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(22, 59, 22);
+    width: 45px;
+    justify-content: space-between;
+}
+
+
+.navigation-btn {
+    aspect-ratio: 1;
+}

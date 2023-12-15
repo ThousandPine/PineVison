@@ -1,5 +1,5 @@
-body {
-    display: block;
+html, body {
+    display: flex;
     position: fixed;
     flex-direction: column;
     background-color: #202020;
@@ -11,22 +11,23 @@ body {
 
 .editor {
     display: flex;
+    flex-direction: row;
     width: 100%;
-    height: 100%;
+    flex-grow: 1;
+    background-color: green;
 }
-
 
 .preview {
     display: flex;
     flex-direction: column; /* 这个是重点，默认的row会导致某些情况下高度限制失效 */
     align-items: center;
     justify-content: center;
-    width: 100%;   
+    flex-grow: 1;
     background-color: rgb(147, 177, 177);
 }
 
-.pannel {
-    max-width: 350px;
-    min-width: 350px;
-    background-color: green;
+.panel {
+    max-width: 320px;
+    min-width: 320px;
+    background-color: rgb(54, 54, 85);
 }
