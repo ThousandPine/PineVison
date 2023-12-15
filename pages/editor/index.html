@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self'; img-src 'self' blob:">
+    <link rel="stylesheet" type="text/css" href="./index.css">
+    <link rel="stylesheet" type="text/css" href="./cropper/cropper.css">
+    <link rel="stylesheet" type="text/css" href="./cropper/panel.css">
+    <link rel="stylesheet" type="text/css" href="./curve/curve.css">
+    <title>PineVision (Dev)</title>
+</head>
+
+<body>
+    <div style="user-select: none; display: flex; flex-direction: column; height: 100%; width: 100%; position: fixed;">
+        <div class="top-bar" style="display: flex; flex-direction: row;">
+            <div class="func-segments" style="display: flex; height: fit-content; background-color: green;">
+                <button id="enable-cropper-btn" type="button">Crop</button>
+                <button id="test-btn" type="button">test</button>
+            </div>
+            <div style="position: relative; left: 80%;">
+                <button id="read-btn" type="button">read</button>
+                <button id="save-btn" type="button">save</button>
+            </div>
+        </div>
+        <div style="display: flex; width: 100%; height: 100%;">
+            <div class="preview-window">
+
+                <div class="cropper-canvas">
+                    <img class="cropper-image bg-mask-img" draggable="false">
+                    <img class="cropper-image crop-box-img" draggable="false">
+                    <div class="cropper-crop-box">
+                        <div class="cropper-dashed dashed-h"></div>
+                        <div class="cropper-dashed dashed-v"></div>
+                        <div class="cropper-point point-n"></div>
+                        <div class="cropper-point point-s"></div>
+                        <div class="cropper-point point-w"></div>
+                        <div class="cropper-point point-e"></div>
+                        <div class="cropper-line line-n"></div>
+                        <div class="cropper-line line-s"></div>
+                        <div class="cropper-line line-w"></div>
+                        <div class="cropper-line line-e"></div>
+                        <div class="cropper-point point-nw"></div>
+                        <div class="cropper-point point-ne"></div>
+                        <div class="cropper-point point-sw"></div>
+                        <div class="cropper-point point-se"></div>
+                        <div class="cropper-move"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel" style="display: flex; width: fit-content; background-color: rgb(134, 186, 190);">
+
+                <div class="curve-panel">
+                    <select id="channel-select">
+                        <option value="3">All</option>
+                        <option value="2">R</option>
+                        <option value="1">G</option>
+                        <option value="0">B</option>
+                    </select>
+                    <div id="curve-canvas-container">
+                        <canvas id="curve-canvas"></canvas>
+                    </div>
+
+                </div>
+
+                <div class="cropper-panel">
+                    <p>调整</p>
+                    <button id="left-rot-btn" type="button">lrot</button>
+                    <button id="right-rot-btn" type="button">rrot</button>
+                    <button id="vertical-flip-btn" type="button">hflip</button>
+                    <button id="horizontal-flip-btn" type="button">vflip</button>
+                    <p>尺寸</p>
+                    <div style="display: flex;">
+                        <input type="number" id="w-input">
+                        <input type="number" id="h-input">
+                    </div>
+                    <p>位置</p>
+                    <div style="display: flex;">
+                        <input type="number" id="x-input">
+                        <input type="number" id="y-input">
+                    </div>
+                    <p>亮度 <input type="number" id="bright-input"></p>
+                    <p>对比度 <input type="number" id="contrast-input"></p>
+                    <p>曝光 <input type="number" id="exposure-input"></p>
+                    <p>饱和度 <input type="number" id="saturation-input"></p>
+                    <p>色温 <input type="number" id="colorTemp-input"></p>
+                    <p>色调 <input type="number" id="colorHue-input"></p>
+                    <p>锐化 <input type="number" id="sharpen-input"></p>
+                    <p>模糊 <input type="number" id="blur-input"></p>
+                    <p><button id="equalizeHist-btn" type="button">直方图均衡化</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="./index.js" type="module"></script>
+<script src="./panel.js" type="module"></script>
+<script src="./cropper/cropBox.js" type="module"></script>
+<script src="./curve/control.js" type="module"></script>
+
+</html>

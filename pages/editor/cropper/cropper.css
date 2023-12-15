@@ -1,0 +1,164 @@
+.cropper-canvas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    width: fit-content;
+    height: fit-content;
+}
+
+.cropper-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.cropper-image.bg-mask-img {
+    opacity: 50%;
+}
+
+.cropper-image.crop-box-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.cropper-crop-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    border: solid 1px #3399FF;
+    opacity: 0.9;
+}
+
+
+.cropper-point {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background-color: #3399FF;
+    opacity: .9;
+}
+
+.cropper-point.point-nw {
+    cursor: nw-resize;
+    left: -3px;
+    top: -3px;
+}
+
+.cropper-point.point-ne {
+    cursor: ne-resize;
+    right: -3px;
+    top: -3px;
+}
+
+.cropper-point.point-sw {
+    cursor: sw-resize;
+    left: -3px;
+    bottom: -3px;
+}
+
+.cropper-point.point-se {
+    cursor: se-resize;
+    right: -3px;
+    bottom: -3px;
+}
+
+.cropper-point.point-n {
+    left: calc(50% - 4px);
+    top: -4px;
+}
+
+.cropper-point.point-s {
+    left: calc(50% - 4px);
+    bottom: -4px;
+}
+
+.cropper-point.point-w {
+    top: calc(50% - 4px);
+    left: -4px;
+}
+
+.cropper-point.point-e {
+    top: calc(50% - 4px);
+    right: -4px;
+}
+
+
+.cropper-line {
+    position: absolute;
+}
+
+.cropper-line.line-n {
+    cursor: n-resize;
+    left: 0;
+    top: -3px;
+    height: 7px;
+    width: 100%;
+}
+
+.cropper-line.line-s {
+    cursor: s-resize;
+    left: 0;
+    bottom: -3px;
+    height: 7px;
+    width: 100%;
+}
+
+.cropper-line.line-w {
+    cursor: w-resize;
+    left: -3px;
+    top: 0;
+    width: 7px;
+    height: 100%;
+}
+
+.cropper-line.line-e {
+    cursor: e-resize;
+    right: -3px;
+    top: 0;
+    width: 7px;
+    height: 100%;
+}
+
+
+.cropper-dashed {
+    display: none;
+    /* 暂时关闭虚线框 */
+    border: 0 dashed #eee;
+    opacity: .5;
+    position: absolute;
+}
+
+.cropper-dashed.dashed-h {
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    height: 33.33333%;
+    left: 0;
+    top: 33.33333%;
+    width: 100%;
+}
+
+.cropper-dashed.dashed-v {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    height: 100%;
+    left: 33.33333%;
+    top: 0;
+    width: 33.33333%;
+}
+
+
+.cropper-move {
+    cursor: move;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    position: absolute;
+    margin: 5px;
+}

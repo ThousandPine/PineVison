@@ -1,0 +1,27 @@
+.curve-panel {
+    background-color: gray;
+}
+
+#curve-canvas-container {
+    display: flex;
+    position: relative;
+    background-color: black;
+    margin: 20px;
+}
+
+#curve-canvas {
+    background-color: #8b8b8b;
+}
+
+.curve-control-point {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    /* border-radius: 50%; */
+    background-color: white;
+    transform: translate(-50%, 50%);
+    cursor: move;
+    /* 透明边框，增加互动范围 */
+    border: 5px solid rgba(255, 0, 0, 0);
+    background-clip: padding-box;
+}
