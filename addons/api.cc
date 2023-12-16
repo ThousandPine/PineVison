@@ -80,63 +80,6 @@ Napi::Value flip(const Napi::CallbackInfo &info)
     return Mat2NapiBuffer(env, result);
 }
 
-/* 亮度 对比度 */
-Napi::Value brightContrast(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-
-    if (info.Length() < 2)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments")
-            .ThrowAsJavaScriptException();
-        return env.Null();
-    }
-
-    // 读取图像
-    cv::Mat img = NapiBuffer2Mat(info[0].As<Napi::Buffer<uint8_t>>());
-
-    // 读取亮度&对比度
-    int bright = info[1].As<Napi::Number>().Int32Value();
-    float contrast = 1 + info[2].As<Napi::Number>().Int32Value() / 100.0;
-
-    // 计算结果
-    cv::Mat result;
-    img.convertTo(result, -1, contrast, bright);
-
-    return Mat2NapiBuffer(env, result);
-}
-
-/* 曝光 */
-Napi::Value exposure(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-
-    if (info.Length() < 2)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments")
-            .ThrowAsJavaScriptException();
-        return env.Null();
-    }
-
-    // 读取图像
-    cv::Mat img = NapiBuffer2Mat(info[0].As<Napi::Buffer<uint8_t>>());
-
-    // 读取曝光值
-    float gamma = 1 + info[1].As<Napi::Number>().Int32Value() / 100.0;
-    float gamma_ = 1 / gamma;
-
-    // 通过gamma变换调整曝光
-    cv::Mat lut(1, 256, CV_8U);
-    uchar *p = lut.ptr();
-    for (int i = 0; i < 256; ++i)
-        p[i] = cv::saturate_cast<uchar>(pow(i / 255.0, gamma_) * 255.0);
-
-    cv::Mat result;
-    cv::LUT(img, lut, result);
-
-    return Mat2NapiBuffer(env, result);
-}
-
 /* 饱和度 */
 Napi::Value saturation(const Napi::CallbackInfo &info)
 {
@@ -295,37 +238,6 @@ Napi::Value blur(const Napi::CallbackInfo &info)
 
     cv::Mat result;
     cv::GaussianBlur(img, result, cv::Size(5, 5), sigma);
-    return Mat2NapiBuffer(env, result);
-}
-
-/* 直方图均衡化 */
-Napi::Value equalizeHist(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-
-    if (info.Length() < 1)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments")
-            .ThrowAsJavaScriptException();
-        return env.Null();
-    }
-
-    // 读取图像
-    cv::Mat img = NapiBuffer2Mat(info[0].As<Napi::Buffer<uint8_t>>());
-
-    //
-    cv::Mat hlsImg;
-    cv::cvtColor(img, hlsImg, cv::COLOR_BGR2HLS);
-
-    std::vector<cv::Mat> channels;
-    cv::split(hlsImg, channels);
-
-    //
-    cv::equalizeHist(channels[1], channels[1]);
-    cv::merge(channels, hlsImg);
-
-    cv::Mat result;
-    cv::cvtColor(hlsImg, result, cv::COLOR_HLS2BGR);
     return Mat2NapiBuffer(env, result);
 }
 

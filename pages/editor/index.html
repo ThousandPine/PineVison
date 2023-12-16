@@ -10,15 +10,6 @@
 </head>
 
 <body>
-    <div class="frame">
-        <button id="frame-back-btn" type="button">back</button>
-        <div class="frame-drag-area"></div>
-        <!-- FIXME: -->
-        <button id="test-btn" type="button">test</button>
-        <button id="frame-min-btn" type="button">min</button>
-        <button id="frame-max-btn" type="button">max</button>
-        <button id="frame-close-btn" type="button">close</button>
-    </div>
     <div class="editor">
         <div class="preview">
             <canvas id="preview-canvas"></canvas>
@@ -45,23 +36,25 @@
             </div>
         </div>
         <div class="panel-container">
+            <!-- 构图调节 -->
             <div id="composition-panel" class="panel" style="display: none;">
+                <h2>构图</h2>
                 <h3>裁剪</h3>
                 <div class="number-component">
                     <span>宽度</span>
-                    <input id="crop-width-input" type="number">
+                    <span id="crop-width-value"></span>
                 </div>
                 <div class="number-component">
                     <span>高度</span>
-                    <input id="crop-height-input", type="number">
+                    <span id="crop-height-value"></span>
                 </div>
                 <div class="number-component">
                     <span>位置X</span>
-                    <input id="crop-x-input" type="number">
+                    <span id="crop-x-value"></span>
                 </div>
                 <div class="number-component">
                     <span>位置Y</span>
-                    <input id="crop-y-input" type="number">
+                    <span id="crop-y-value"></span>
                 </div>
                 <h3>旋转</h3>
                 <div style="display: flex; justify-content: space-between;">
@@ -75,26 +68,61 @@
                 <button id="flip-h-btn" type="button">flip</button>
                 <button id="flip-v-btn" type="button">flip</button>
             </div>
+            <!-- 光照调节 -->
+            <div id="light-panel" class="panel" style="display: none;">
+                <h2>光照</h2>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>亮度</span>
+                        <span id="bright-value">0</span>
+                    </div>
+                    <input id="bright-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>对比度</span>
+                        <span id="contrast-value">0</span>
+                    </div>
+                    <input id="contrast-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>曝光</span>
+                        <span id="exposure-value">0</span>
+                    </div>
+                    <input id="exposure-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <!-- <div class="slider-component">
+                    <div class="number-component">
+                        <span>光感</span>
+                        <span >0</span>
+                    </div>
+                    <input type="range" min="-100" max="100" value="0">
+                </div> -->
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>直方图均衡化</span>
+                        <span id="equalize-value">0</span>
+                    </div>
+                    <input id="equalize-input" type="range" min="0" max="1" value="0">
+                </div>
+            </div>
         </div>
         <!-- 导航栏 -->
         <div class="navigation-bar">
-            <div>
-                <button id="composition-btn" class="navigation-btn">构图</button>
-                <button class="navigation-btn">光照</button>
-                <button class="navigation-btn">色彩</button>
-                <button class="navigation-btn">曲线</button>
-                <button class="navigation-btn">文字</button>
-                <button class="navigation-btn">水印</button>
-            </div>
-            <div>
-                <button class="navigation-btn">打开</button>
-                <button class="navigation-btn">保存</button>
-            </div>
+            <button id="composition-btn" class="navigation-btn">构图</button>
+            <button id="light-btn" class="navigation-btn">光照</button>
+            <button class="navigation-btn">色彩</button>
+            <button class="navigation-btn">曲线</button>
+            <button class="navigation-btn">后处理</button>
+            <button class="navigation-btn">文字</button>
+            <button class="navigation-btn">水印</button>
         </div>
     </div>
 </body>
 
 <script src="./src/index.js" type="module"></script>
-<script src="./src/frame.js" type="module"></script>
+<script src="./src/navigation.js" type="module"></script>
+<script src="./src/light.js" type="module"></script>
 
 </html>

@@ -12,21 +12,13 @@ contextBridge.exposeInMainWorld('img', {
     curImage: img,
     init: () => ipcRenderer.send('image:init'),
     open: () => ipcRenderer.send('image:open'),
-    save: (crop) => ipcRenderer.send('image:save', crop),
+    save: () => ipcRenderer.send('image:save'),
     addImgLoadListener: (listener) => img.addEventListener('load', listener),
+    crop: (crop) => ipcRenderer.send('image:crop', crop),
     rotate: (clockwish) => ipcRenderer.send('image:rotate', clockwish),
     flip: (flipType) => ipcRenderer.send('image:flip', flipType),
-    brightContrast: (bright, contrast) => ipcRenderer.send('image:bc', bright, contrast),
-    exposure: (exposure) => ipcRenderer.send('image:exposure', exposure),
-    saturation: (saturation) => ipcRenderer.send('image:saturation', saturation),
-    colorTemp: (colorTemp) => ipcRenderer.send('image:colorTemp', colorTemp),
-    colorHue: (colorHue) => ipcRenderer.send('image:colorHue', colorHue),
-    sharpen: (sharpen) => ipcRenderer.send('image:sharpen', sharpen),
-    blur: (blur) => ipcRenderer.send('image:blur', blur),
-    equalizeHist: () => ipcRenderer.send('image:equalizeHist'),
+    light: (light) => ipcRenderer.send('image:light', light),
     curve: (curves) => ipcRenderer.send('image:curve', curves),
-    // 
-    getImage: (layerIndex) => ipcRenderer.invoke('image:get', layerIndex)
 })
 
 ipcRenderer.addListener('image:update', (evnet, imgBuffer) => {

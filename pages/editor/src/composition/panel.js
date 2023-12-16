@@ -15,33 +15,20 @@ document.getElementById('composition-btn').addEventListener('click', () => {
         })
 })
 
-const heightInput = document.getElementById('crop-height-input')
-const widthInput = document.getElementById('crop-width-input')
-const xInput = document.getElementById('crop-x-input')
-const yInput = document.getElementById('crop-y-input')
+const heightValue = document.getElementById('crop-height-value')
+const widthValue = document.getElementById('crop-width-value')
+const xValue = document.getElementById('crop-x-value')
+const yValue = document.getElementById('crop-y-value')
 const rotateValue = document.getElementById('rotate-value')
 let rotateTimes = 0
 
 export function updatePanel(crop) {
-    heightInput.value = crop.height
-    widthInput.value = crop.width
-    xInput.value = crop.x
-    yInput.value = crop.y
+    heightValue.innerHTML = crop.height
+    widthValue.innerHTML = crop.width
+    xValue.innerHTML = crop.x
+    yValue.innerHTML = crop.y
 }
 
-function updateSize() {
-    setCropSize(heightInput.value, widthInput.value)
-}
-
-function updatePos() {
-    setCropPos(xInput.value, yInput.value)
-}
-
-heightInput.addEventListener('change', updateSize)
-widthInput.addEventListener('change', updateSize)
-
-xInput.addEventListener('change', updatePos)
-yInput.addEventListener('change', updatePos)
 
 document.getElementById('rotate-left-btn').addEventListener('click', () => {
     window.img.rotate(false)

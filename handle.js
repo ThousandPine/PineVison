@@ -81,12 +81,8 @@ ipcMain.on('image:flip', (evnet, flipType) => {
     sendImageData(evnet.sender, curImage.data)
 })
 
-ipcMain.on('image:bc', (event, bright, contrast) => {
-    sendImageData(event.sender, addon.brightContrast(curImage.data, bright, contrast))
-})
-
-ipcMain.on('image:exposure', (event, exposure) => {
-    sendImageData(event.sender, addon.exposure(curImage.data, exposure))
+ipcMain.on('image:light', (event, light) => {
+    sendImageData(event.sender, addon.light(curImage.data, light))
 })
 
 ipcMain.on('image:saturation', (event, saturation) => {
@@ -107,10 +103,6 @@ ipcMain.on('image:sharpen', (event, sharpen) => {
 
 ipcMain.on('image:blur', (event, blur) => {
     sendImageData(event.sender, addon.blur(curImage.data, blur))
-})
-
-ipcMain.on('image:equalizeHist', (event) => {
-    sendImageData(event.sender, addon.equalizeHist(curImage.data))
 })
 
 ipcMain.on('image:curve', (event, curves) => {
