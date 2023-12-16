@@ -1,11 +1,4 @@
-// document.getElementById('read-btn').addEventListener('click', async () => {
-//     window.img.open()
-// })
-
-// document.getElementById('save-btn').addEventListener('click', async () => {
-//     window.img.save()
-// })
-import { enableCropBox, disableCropBox } from './cropper/cropBox.js'
+import { enableCropBox, disableCropBox } from './composition/cropBox.js'
 
 const canvasInit = async () => {
     window.img.init()

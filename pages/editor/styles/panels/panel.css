@@ -1,0 +1,16 @@
+.panel {
+    height: 100%;
+    padding: 10px;
+    background-color: rgb(135, 180, 135);
+}
+
+.number-component {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.number-component input {
+    width: 50px;
+    border: 0;
+}

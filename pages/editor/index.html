@@ -5,12 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self'; img-src 'self' blob:">
-    <link rel="stylesheet" type="text/css" href="./index.css">
-    <link rel="stylesheet" type="text/css" href="./navigation/navigation.css">
-    <link rel="stylesheet" type="text/css" href="./frame/frame.css">
-    <link rel="stylesheet" type="text/css" href="./cropper/cropper.css">
-    <!-- <link rel="stylesheet" type="text/css" href="./cropper/panel.css"> -->
-    <link rel="stylesheet" type="text/css" href="./curve/curve.css">
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
     <title>PineVision (Dev)</title>
 </head>
 
@@ -48,8 +43,38 @@
                 </div>
             </div>
         </div>
-        <div class="panel">
-
+        <div class="panel-container">
+            <div class="composition-panel panel">
+                <h3>裁剪</h3>
+                <div class="number-component">
+                    <span>宽度</span>
+                    <input id="crop-width-input" type="number">
+                </div>
+                <div class="number-component">
+                    <span>高度</span>
+                    <input id="crop-height-input", type="number">
+                </div>
+                <div class="number-component">
+                    <span>位置X</span>
+                    <input id="crop-x-input" type="number">
+                </div>
+                <div class="number-component">
+                    <span>位置Y</span>
+                    <input id="crop-y-input" type="number">
+                </div>
+                <h3>旋转</h3>
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <button id="rotate-left-btn" type="button">rotate</button>
+                        <button id="rotate-right-btn" type="button">rotate</button>
+                    </div>
+                    <span id="rotate-value"></span>
+                    <span>°</span>
+                </div>
+                <h3>翻转</h3>
+                <button id="flip-h-btn" type="button">flip</button>
+                <button id="flip-v-btn" type="button">flip</button>
+            </div>
         </div>
         <!-- 导航栏 -->
         <div class="navigation-bar">
@@ -60,7 +85,6 @@
                 <button class="navigation-btn">曲线</button>
                 <button class="navigation-btn">文字</button>
                 <button class="navigation-btn">水印</button>
-                <button class="navigation-btn">历史</button>
             </div>
             <div>
                 <button class="navigation-btn">打开</button>
@@ -70,7 +94,7 @@
     </div>
 </body>
 
-<!-- <script src="./index.js" type="module"></script> -->
-<!-- <script src="./frame/frame.js" type="module"></script> -->
+<script src="./src/index.js" type="module"></script>
+<script src="./src/frame.js" type="module"></script>
 
 </html>
