@@ -1,19 +1,7 @@
-import { enableCropBox, disableCropBox } from './composition/cropBox.js'
+import { enablePreview } from './preview.js'
 
 const canvasInit = async () => {
-    window.img.init()
-    enableCropBox()
+    await window.img.init()
+    enablePreview()
 }
 canvasInit()
-
-let a = 0
-document.getElementById('test-btn').addEventListener('click', () => {
-    if(a) {
-        enableCropBox()
-        a = 0
-    } else {
-        disableCropBox()
-        a = 1
-    }
-
-})

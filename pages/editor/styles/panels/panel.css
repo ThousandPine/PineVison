@@ -1,4 +1,6 @@
 .panel {
+    max-width: 320px;
+    min-width: 320px;
     height: 100%;
     padding: 10px;
     background-color: rgb(135, 180, 135);

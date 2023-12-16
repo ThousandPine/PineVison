@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     display: flex;
     position: fixed;
     flex-direction: column;
@@ -17,22 +18,24 @@ input::-webkit-inner-spin-button {
 .editor {
     display: flex;
     flex-direction: row;
-    width: 100%;
     flex-grow: 1;
+    max-height: calc(100% - 37px);
     background-color: green;
 }
 
 .preview {
     display: flex;
-    flex-direction: column; /* 这个是重点，默认的row会导致某些情况下高度限制失效 */
+    /* 这个是重点，默认的row会导致某些情况下高度限制失效 */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
     background-color: rgb(81, 123, 111);
+    padding: 15px;
 }
 
 .panel-container {
-    max-width: 320px;
-    min-width: 320px;
+    /* max-width: 320px;
+    min-width: 320px; */
     background-color: rgb(54, 54, 85);
 }

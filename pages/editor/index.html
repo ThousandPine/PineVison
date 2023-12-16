@@ -21,7 +21,8 @@
     </div>
     <div class="editor">
         <div class="preview">
-            <div class="cropper">
+            <canvas id="preview-canvas"></canvas>
+            <div class="cropper" style="display: none;">
                 <img class="cropper-image bg-mask-img" draggable="false">
                 <img class="cropper-image crop-box-img" draggable="false">
                 <div class="cropper-crop-box">
@@ -44,7 +45,7 @@
             </div>
         </div>
         <div class="panel-container">
-            <div class="composition-panel panel">
+            <div id="composition-panel" class="panel" style="display: none;">
                 <h3>裁剪</h3>
                 <div class="number-component">
                     <span>宽度</span>
@@ -68,8 +69,7 @@
                         <button id="rotate-left-btn" type="button">rotate</button>
                         <button id="rotate-right-btn" type="button">rotate</button>
                     </div>
-                    <span id="rotate-value"></span>
-                    <span>°</span>
+                    <span id="rotate-value">0°</span>
                 </div>
                 <h3>翻转</h3>
                 <button id="flip-h-btn" type="button">flip</button>
@@ -79,7 +79,7 @@
         <!-- 导航栏 -->
         <div class="navigation-bar">
             <div>
-                <button class="navigation-btn">构图</button>
+                <button id="composition-btn" class="navigation-btn">构图</button>
                 <button class="navigation-btn">光照</button>
                 <button class="navigation-btn">色彩</button>
                 <button class="navigation-btn">曲线</button>
