@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "addon",
-      "sources": [ "./addons/main.cc", "./addons/api.cc", "./addons/light.cc" ],
+      "sources": [ "./addons/main.cc", "./addons/api.cc", "./addons/light.cc", "./addons/color.cc" ],
       "defines": [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ], # node-addon-api关闭C++异常
       # "msvs_settings": {
       #   "VCCLCompilerTool": {

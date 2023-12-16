@@ -85,16 +85,8 @@ ipcMain.on('image:light', (event, light) => {
     sendImageData(event.sender, addon.light(curImage.data, light))
 })
 
-ipcMain.on('image:saturation', (event, saturation) => {
-    sendImageData(event.sender, addon.saturation(curImage.data, saturation))
-})
-
-ipcMain.on('image:colorTemp', (event, colorTemp) => {
-    sendImageData(event.sender, addon.colorTemp(curImage.data, colorTemp))
-})
-
-ipcMain.on('image:colorHue', (event, colorHue) => {
-    sendImageData(event.sender, addon.colorHue(curImage.data, colorHue))
+ipcMain.on('image:color', (event, color) => {
+    sendImageData(event.sender, addon.color(curImage.data, color))
 })
 
 ipcMain.on('image:sharpen', (event, sharpen) => {

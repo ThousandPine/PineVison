@@ -107,12 +107,37 @@
                     <input id="equalize-input" type="range" min="0" max="1" value="0">
                 </div>
             </div>
+            <!-- 色彩调节 -->
+            <div id="color-panel" class="panel" style="">
+                <h2>色彩</h2>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>饱和度</span>
+                        <span id="saturation-value">0</span>
+                    </div>
+                    <input id="saturation-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>色温</span>
+                        <span id="temp-value">0</span>
+                    </div>
+                    <input id="temp-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>色调</span>
+                        <span id="hue-value">0</span>
+                    </div>
+                    <input id="hue-input" type="range" min="-100" max="100" value="0">
+                </div>
+            </div>
         </div>
         <!-- 导航栏 -->
         <div class="navigation-bar">
             <button id="composition-btn" class="navigation-btn">构图</button>
             <button id="light-btn" class="navigation-btn">光照</button>
-            <button class="navigation-btn">色彩</button>
+            <button id="color-btn" class="navigation-btn">色彩</button>
             <button class="navigation-btn">曲线</button>
             <button class="navigation-btn">后处理</button>
             <button class="navigation-btn">文字</button>
@@ -122,7 +147,7 @@
 </body>
 
 <script src="./src/index.js" type="module"></script>
-<script src="./src/navigation.js" type="module"></script>
 <script src="./src/light.js" type="module"></script>
+<script src="./src/color.js" type="module"></script>
 
 </html>

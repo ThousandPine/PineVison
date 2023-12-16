@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('img', {
     rotate: (clockwish) => ipcRenderer.send('image:rotate', clockwish),
     flip: (flipType) => ipcRenderer.send('image:flip', flipType),
     light: (light) => ipcRenderer.send('image:light', light),
+    color: (color) => ipcRenderer.send('image:color', color),
     curve: (curves) => ipcRenderer.send('image:curve', curves),
 })
 
