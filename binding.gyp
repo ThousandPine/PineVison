@@ -3,7 +3,7 @@
         "target_name":
         "addon",
         "sources": [
-            "./addons/main.cc", "./addons/api.cc", "./addons/light.cc",
+            "./addons/main.cc", "./addons/composition.cc", "./addons/light.cc",
             "./addons/color.cc", "./addons/curve.cc", "./addons/post.cc"
         ],
         "defines": ['NAPI_DISABLE_CPP_EXCEPTIONS'],  # node-addon-api关闭C++异常
