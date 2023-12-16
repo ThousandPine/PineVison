@@ -5,3 +5,7 @@ const canvasInit = async () => {
     enablePreview()
 }
 canvasInit()
+
+document.getElementById('test-btn').addEventListener('click', () => {
+    window.img.open()
+})

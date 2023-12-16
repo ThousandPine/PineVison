@@ -145,6 +145,24 @@
                     <canvas id="curve-canvas"></canvas>
                 </div>
             </div>
+            <!-- 后处理 -->
+            <div id="post-panel" class="panel" style="display: none;">
+                <h2>后期处理</h2>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>平滑</span>
+                        <span id="blur-value">0</span>
+                    </div>
+                    <input id="blur-input" type="range" min="0" max="10" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>锐化</span>
+                        <span id="sharpen-value">0</span>
+                    </div>
+                    <input id="sharpen-input" type="range" min="0" max="100" value="0">
+                </div>
+            </div>
         </div>
         <!-- 导航栏 -->
         <div class="navigation-bar">
@@ -152,9 +170,10 @@
             <button id="light-btn" class="navigation-btn">光照</button>
             <button id="color-btn" class="navigation-btn">色彩</button>
             <button id="curve-btn" class="navigation-btn">曲线</button>
-            <button class="navigation-btn">后处理</button>
+            <button id="post-btn" class="navigation-btn">后处理</button>
             <button class="navigation-btn">文字</button>
             <button class="navigation-btn">水印</button>
+            <button id="test-btn" class="navigation-btn">test</button>
         </div>
     </div>
 </body>
@@ -163,6 +182,7 @@
 <script src="./src/navigation.js" type="module"></script>
 <script src="./src/light.js" type="module"></script>
 <script src="./src/color.js" type="module"></script>
+<script src="./src/post.js" type="module"></script>
 <script src="./src/curve/control.js" type="module"></script>
 
 </html>

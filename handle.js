@@ -89,12 +89,8 @@ ipcMain.on('image:color', (event, color) => {
     sendImageData(event.sender, addon.color(curImage.data, color))
 })
 
-ipcMain.on('image:sharpen', (event, sharpen) => {
-    sendImageData(event.sender, addon.sharpen(curImage.data, sharpen))
-})
-
-ipcMain.on('image:blur', (event, blur) => {
-    sendImageData(event.sender, addon.blur(curImage.data, blur))
+ipcMain.on('image:post', (event, post) => {
+    sendImageData(event.sender, addon.post(curImage.data, post))
 })
 
 ipcMain.on('image:curve', (event, curves) => {

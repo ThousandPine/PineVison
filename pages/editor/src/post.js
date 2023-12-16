@@ -1,4 +1,4 @@
-const keys = ['saturation', 'temp', 'hue']
+const keys = ['blur', 'sharpen']
 const inputs = {}
 const values = {}
 
@@ -21,5 +21,5 @@ function applyPost() {
         args[key] = parseInt(inputs[key].value)
     }
     console.log(args)
-    window.img.color(args)
+    window.img.post(args)
 }

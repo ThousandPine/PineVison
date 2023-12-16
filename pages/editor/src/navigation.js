@@ -60,11 +60,20 @@ document.getElementById('curve-btn').addEventListener('click', () => {
     const panel = document.getElementById('curve-panel')
     togglePanel(panel,
         () => {
-            enableCropBox()
             panel.style.display = ''
         },
         () => {
-            disableCropBox()
+            panel.style.display = 'none'
+        })
+})
+
+document.getElementById('post-btn').addEventListener('click', () => {
+    const panel = document.getElementById('post-panel')
+    togglePanel(panel,
+        () => {
+            panel.style.display = ''
+        },
+        () => {
             panel.style.display = 'none'
         })
 })
