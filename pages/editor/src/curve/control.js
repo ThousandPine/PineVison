@@ -10,7 +10,6 @@ const ctx = canvas.getContext("2d")
 let curveApplyTimer = null  // 曲线调色定时器
 let curves = null           // 二维数组，按照 b,g,r,all 的顺序存储曲线映射
 let controls = null         // 二维数组，按照 b,g,r,all 的顺序存储控制点数组
-let curControls = null      // 当前控制点数组
 let channel = 3             // 当前通道
 
 // 画布宽高设为255，对应[0~255]的映射
@@ -43,7 +42,7 @@ document.getElementById('channel-select').addEventListener('change', function ()
 init()
 
 /**
- * TODO: 初始化
+ * 初始化
  */
 function init() {
 
@@ -71,11 +70,6 @@ function init() {
     // 绘制曲线
     drawCurve()
 }
-
-/**
- * TODO: 将面版转为类
- */
-
 
 /**
  * 切换当前编辑通道
@@ -280,7 +274,7 @@ function drawCurve() {
 
     // 绘制背景棋盘格
     ctx.lineWidth = 0.5
-    ctx.strokeStyle = 'gray'
+    ctx.strokeStyle = '#6b968a'
     for (let i = 0, cellSize = canvas.width / 4; i < 4; ++i) {
         for (let j = 0; j < 4; ++j) {
             ctx.beginPath()
@@ -291,7 +285,7 @@ function drawCurve() {
 
     // 绘制对角线
     ctx.lineWidth = 1
-    ctx.strokeStyle = 'gray'
+    ctx.strokeStyle = '#6b968a'
     ctx.beginPath()
     ctx.moveTo(0, 0)
     ctx.lineTo(canvas.width, canvas.height)
@@ -299,7 +293,7 @@ function drawCurve() {
 
 
     // 四个通道对应的颜色
-    const colors = ['blue', 'green', 'red', 'white']
+    const colors = ['blue', '#9ed6a1', 'red', 'white']
 
     // channel为 b,g,r 时只绘制单一曲线
     if (channel < 3) {

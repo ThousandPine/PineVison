@@ -1,17 +1,5 @@
 import { togglePanel } from "./navigation.js"
 
-const panel = document.getElementById('color-panel')
-
-document.getElementById('color-btn').addEventListener('click', () => {
-    togglePanel(panel,
-        () => {
-            panel.style.display = ''
-        },
-        () => {
-            panel.style.display = 'none'
-        }
-    )
-})
 
 const keys = ['saturation', 'temp', 'hue']
 const inputs = {}

@@ -108,7 +108,7 @@
                 </div>
             </div>
             <!-- 色彩调节 -->
-            <div id="color-panel" class="panel" style="">
+            <div id="color-panel" class="panel" style="display: none;">
                 <h2>色彩</h2>
                 <div class="slider-component">
                     <div class="number-component">
@@ -132,13 +132,26 @@
                     <input id="hue-input" type="range" min="-100" max="100" value="0">
                 </div>
             </div>
+            <!-- 曲线 -->
+            <div id="curve-panel" class="panel" style="display: none;">
+                <h2>曲线</h2>
+                <select id="channel-select">
+                    <option value="3">All</option>
+                    <option value="2">R</option>
+                    <option value="1">G</option>
+                    <option value="0">B</option>
+                </select>
+                <div id="curve-canvas-container">
+                    <canvas id="curve-canvas"></canvas>
+                </div>
+            </div>
         </div>
         <!-- 导航栏 -->
         <div class="navigation-bar">
             <button id="composition-btn" class="navigation-btn">构图</button>
             <button id="light-btn" class="navigation-btn">光照</button>
             <button id="color-btn" class="navigation-btn">色彩</button>
-            <button class="navigation-btn">曲线</button>
+            <button id="curve-btn" class="navigation-btn">曲线</button>
             <button class="navigation-btn">后处理</button>
             <button class="navigation-btn">文字</button>
             <button class="navigation-btn">水印</button>
@@ -147,7 +160,9 @@
 </body>
 
 <script src="./src/index.js" type="module"></script>
+<script src="./src/navigation.js" type="module"></script>
 <script src="./src/light.js" type="module"></script>
 <script src="./src/color.js" type="module"></script>
+<script src="./src/curve/control.js" type="module"></script>
 
 </html>

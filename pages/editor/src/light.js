@@ -1,18 +1,3 @@
-import { togglePanel } from "./navigation.js"
-
-const panel = document.getElementById('light-panel')
-
-document.getElementById('light-btn').addEventListener('click', () => {
-    togglePanel(panel,
-        () => {
-            panel.style.display = ''
-        },
-        () => {
-            panel.style.display = 'none'
-        }
-    )
-})
-
 const keys = ['bright', 'contrast', 'exposure', 'equalize']
 const inputs = {}
 const values = {}

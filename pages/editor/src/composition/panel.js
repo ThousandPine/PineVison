@@ -1,20 +1,3 @@
-import { setCropSize, setCropPos, enableCropBox, disableCropBox } from "./cropBox.js";
-import { togglePanel } from "../navigation.js";
-
-const panel = document.getElementById('composition-panel')
-
-document.getElementById('composition-btn').addEventListener('click', () => {
-    togglePanel(panel,
-        () => {
-            enableCropBox()
-            panel.style.display = ''
-        },
-        () => {
-            disableCropBox()
-            panel.style.display = 'none'
-        })
-})
-
 const heightValue = document.getElementById('crop-height-value')
 const widthValue = document.getElementById('crop-width-value')
 const xValue = document.getElementById('crop-x-value')
