@@ -71,8 +71,7 @@ Napi::Value flip(const Napi::CallbackInfo &info)
     int flipType = info[1].As<Napi::Number>().Int32Value();
 
     // 旋转图像
-    cv::Mat result;
-    cv::flip(img, result, flipType);
+    cv::flip(img, img, flipType);
 
-    return Mat2NapiBuffer(env, result);
+    return Mat2NapiBuffer(env, img);
 }

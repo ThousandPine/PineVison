@@ -1,7 +1,7 @@
 #include "tools.h"
 
 /* 饱和度 */
-void saturation(cv::Mat &img, int n)
+inline void saturation(cv::Mat &img, int n)
 {
     // 读取饱和度
     float saturation = 1 + n / 100.0;
@@ -22,7 +22,7 @@ void saturation(cv::Mat &img, int n)
 }
 
 /* 色温 */
-void colorTemp(cv::Mat &img, int n)
+inline void colorTemp(cv::Mat &img, int n)
 {
     // 拆分通道
     std::vector<cv::Mat> channels;
@@ -36,7 +36,7 @@ void colorTemp(cv::Mat &img, int n)
 }
 
 /* 色调 */
-void colorHue(cv::Mat &img, int n)
+inline void colorHue(cv::Mat &img, int n)
 {
     // 拆分通道
     std::vector<cv::Mat> channels;

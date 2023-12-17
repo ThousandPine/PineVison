@@ -1,13 +1,13 @@
 #include "tools.h"
 
 /* 亮度 对比度 */
-void brightContrast(cv::Mat &img, int bright, int contrast)
+inline void brightContrast(cv::Mat &img, int bright, int contrast)
 {
     img.convertTo(img, -1, 1 + contrast / 100.0, bright);
 }
 
 /* 曝光 */
-void exposure(cv::Mat &img, int n)
+inline void exposure(cv::Mat &img, int n)
 {
     // 计算gamma
     float gamma = 1 + n / 100.0;
@@ -23,7 +23,7 @@ void exposure(cv::Mat &img, int n)
 }
 
 /* 直方图均衡化 */
-void equalizeHist(cv::Mat &img, int n)
+inline void equalizeHist(cv::Mat &img, int n)
 {
     if (!n)
     {

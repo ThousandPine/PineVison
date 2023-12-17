@@ -1,7 +1,7 @@
 #include "tools.h"
 
 /* 平滑 */
-void blur(cv::Mat &img, int n)
+inline void blur(cv::Mat &img, int n)
 {
     if (n <= 0)
     {
@@ -13,7 +13,7 @@ void blur(cv::Mat &img, int n)
 }
 
 /* 锐化 */
-void sharpen(cv::Mat &img, int n)
+inline void sharpen(cv::Mat &img, int n)
 {
     // 定义核
     cv::Mat kernel = (cv::Mat_<float>(3, 3) << 0, -1, 0,
