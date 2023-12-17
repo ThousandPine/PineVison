@@ -160,10 +160,30 @@
                     <input id="sharpen-input" type="range" min="0" max="100" value="0">
                 </div>
             </div>
-            <!-- 文字 -->
-            <div id="watermark-panel" class="panel" style="">
+            <!-- 水印 -->
+            <div id="watermark-panel" class="panel" style="display: none;">
                 <h2>添加水印</h2>
-                
+                <div class="number-component">
+                    <span>图像</span>
+                    <input id="watermark-path-input" type="file" accept="image/*" style="width: 166px;">
+                </div>
+                <div class="number-component">
+                    <span>位置</span>
+                    <select id="watermark-pos-select">
+                        <option value="0">居中</option>
+                        <option value="1">左上</option>
+                        <option value="2">右上</option>
+                        <option value="3">右下</option>
+                        <option value="4">左下</option>
+                    </select>
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>缩放</span>
+                        <span id="watermark-zoom-value">0</span>
+                    </div>
+                    <input id="watermark-zoom-input" type="range" min="-90" max="200" value="0">
+                </div>
             </div>
         </div>
         <!-- 导航栏 -->
@@ -175,7 +195,7 @@
                     <button id="color-btn" class="side-bar-btn">色彩</button>
                     <button id="curve-btn" class="side-bar-btn">曲线</button>
                     <button id="post-btn" class="side-bar-btn">后处理</button>
-                    <button class="side-bar-btn">水印</button>
+                    <button id="watermark-btn" class="side-bar-btn">水印</button>
                 </div>
                 <div>
                     <button id="test-btn" class="side-bar-btn">test</button>
@@ -196,6 +216,7 @@
 <script src="./src/light.js" type="module"></script>
 <script src="./src/color.js" type="module"></script>
 <script src="./src/post.js" type="module"></script>
+<script src="./src/watermark.js" type="module"></script>
 <script src="./src/curve/control.js" type="module"></script>
 <script src="./src/composition/panel.js" type="module"></script>
 

@@ -361,7 +361,6 @@ function applyCurve() {
     }
 
     curveApplyTimer = setTimeout(() => {
-        console.log(curves)
         window.img.curve(curves)
         curveApplyTimer = null;
     }, 200);  // 设定最小执行间隔为200毫秒

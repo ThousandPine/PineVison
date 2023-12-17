@@ -34,7 +34,6 @@ document.getElementById('flip-v-btn').addEventListener('click', () => {
     window.state.save()
 })
 
-console.log('panel')
 document.getElementById('composition-btn').addEventListener('click', () => {
     const panel = document.getElementById('composition-panel')
     openPanel(

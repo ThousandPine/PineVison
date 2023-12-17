@@ -22,7 +22,6 @@ function applyLight() {
     for (let key of keys) {
         args[key] = parseInt(inputs[key].value)
     }
-    console.log(args)
     window.img.light(args)
 }
 
