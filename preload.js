@@ -22,6 +22,7 @@ contextBridge.exposeInMainWorld('img', {
     color: (color) => ipcRenderer.send('image:color', color),
     curve: (curves) => ipcRenderer.send('image:curve', curves),
     post: (post) => ipcRenderer.send('image:post', post),
+    watermark: (watermark) => ipcRenderer.send('image:watermark', watermark),
 })
 
 ipcRenderer.addListener('image:update', (event, imgBuffer) => {

@@ -9,6 +9,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports.Set(Napi::String::New(env, "color"), Napi::Function::New(env, color));
     exports.Set(Napi::String::New(env, "curve"), Napi::Function::New(env, curve));
     exports.Set(Napi::String::New(env, "post"), Napi::Function::New(env, post));
+    exports.Set(Napi::String::New(env, "watermark"), Napi::Function::New(env, watermark));
     return exports;
 }
 

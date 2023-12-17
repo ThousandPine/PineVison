@@ -4,7 +4,7 @@
         "addon",
         "sources": [
             "./addons/main.cc", "./addons/composition.cc", "./addons/light.cc",
-            "./addons/color.cc", "./addons/curve.cc", "./addons/post.cc"
+            "./addons/color.cc", "./addons/curve.cc", "./addons/post.cc", "./addons/watermark.cc"
         ],
         "defines": ['NAPI_DISABLE_CPP_EXCEPTIONS'],  # node-addon-api关闭C++异常
         "include_dirs": [

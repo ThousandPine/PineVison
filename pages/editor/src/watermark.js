@@ -4,11 +4,17 @@ const pathInput = document.getElementById('watermark-path-input')
 const posInput = document.getElementById('watermark-pos-select')
 const zoomInput = document.getElementById('watermark-zoom-input')
 const zoomValue = document.getElementById('watermark-zoom-value')
+const opacityInput = document.getElementById('watermark-opacity-input')
+const opacityValue = document.getElementById('watermark-opacity-value')
 
 pathInput.addEventListener('change', apply)
 posInput.addEventListener('change', apply)
 zoomInput.addEventListener('change', function() {
     zoomValue.innerHTML = getZoom() + '%'
+    apply()
+})
+opacityInput.addEventListener('change', function() {
+    opacityValue.innerHTML = this.value + '%'
     apply()
 })
 
@@ -23,12 +29,10 @@ function apply() {
     const args = {
         path: pathInput.value,
         pos: posInput.value,
-        zoom: getZoom()
+        zoom: getZoom(),
+        opacity: parseInt(opacityInput.value)
     }
-
-    console.log(args)
-        
-    // window.img.watermark(args)
+    window.img.watermark(args)
 }
 
 
@@ -42,6 +46,8 @@ document.getElementById('watermark-btn').addEventListener('click', () => {
             posInput.value = 0
             zoomInput.value = 0
             zoomValue.innerHTML = getZoom() + '%'
+            zoomInput.value = 50
+            zoomValue.innerHTML = opacityInput.value + '%'
         },
         () => {
             panel.style.display = 'none'

@@ -40,7 +40,7 @@ ipcMain.on('image:get', (event) => {
 })
 
 /* 图像处理事件 */
-const processNames = ['crop', 'rotate', 'flip', 'light', 'color', 'curve', 'post']
+const processNames = ['crop', 'rotate', 'flip', 'light', 'color', 'curve', 'post', 'watermark']
 
 for (const name of processNames) {
     ipcMain.on('image:' + name, (event, args) => {
