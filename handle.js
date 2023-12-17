@@ -5,7 +5,6 @@ const fs = require('fs')
 const addon = require('./build/Release/addon')
 const { send, eventNames } = require('node:process')
 
-
 ipcMain.on('win:minimize', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
     win.minimize()
@@ -13,7 +12,7 @@ ipcMain.on('win:minimize', (event) => {
 
 ipcMain.handle('win:maximize', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender)
-    
+
     if (win.isMaximized()) {
         win.unmaximize()
         return false
@@ -43,9 +42,8 @@ function loadImage(path) {
 }
 
 ipcMain.on('image:init', (event) => {
-
-    const buffer = loadImage(path.join(__dirname, 'test.jpg'))
-    sendImageData(event.sender, buffer)
+    curImage.data = loadImage(path.join(__dirname, 'test.jpg'))
+    sendImageData(event.sender, curImage.data)
 })
 
 ipcMain.on('image:open', (event) => {
@@ -58,41 +56,50 @@ ipcMain.on('image:open', (event) => {
         properties: ['openFile']
     }
     const path = dialog.showOpenDialogSync(options)
-    const buffer = loadImage(path[0])
-
-    sendImageData(event.sender, buffer)
+    curImage.data = loadImage(path[0])
+    sendImageData(event.sender, curImage.data)
 })
 
-ipcMain.on('image:save', (event, crop) => {
-    if (crop) {
-        curImage.data = addon.crop(curImage.data, crop)
+ipcMain.on('image:save', (event) => {
+    if (curImage.crop) {
+        curImage.data = addon.crop(curImage.data, curImage.crop)
         sendImageData(event.sender, curImage.data)
     }
     fs.writeFileSync(path.join(__dirname, 'out.png'), curImage.data)
 })
 
-ipcMain.on('image:rotate', (evnet, clockwish) => {
+ipcMain.on('image:crop', (event, crop) => {
+    curImage.crop = crop
+})
+
+ipcMain.on('image:rotate', (event, clockwish) => {
     curImage.data = addon.rotate(curImage.data, clockwish)
-    sendImageData(evnet.sender, curImage.data)
+    sendImageData(event.sender, curImage.data)
 })
 
-ipcMain.on('image:flip', (evnet, flipType) => {
+ipcMain.on('image:flip', (event, flipType) => {
     curImage.data = addon.flip(curImage.data, flipType)
-    sendImageData(evnet.sender, curImage.data)
+    sendImageData(event.sender, curImage.data)
 })
 
-ipcMain.on('image:light', (event, light) => {
-    sendImageData(event.sender, addon.light(curImage.data, light))
-})
+/* 处理流水线 */
+const processNames = ['light', 'color', 'curve', 'post']
+const processInfo = {}
 
-ipcMain.on('image:color', (event, color) => {
-    sendImageData(event.sender, addon.color(curImage.data, color))
-})
+for (const name of processNames) {
+    ipcMain.on('image:' + name, (event, info) => {
+        // 保存信息
+        processInfo[name] = info
 
-ipcMain.on('image:post', (event, post) => {
-    sendImageData(event.sender, addon.post(curImage.data, post))
-})
-
-ipcMain.on('image:curve', (event, curves) => {
-    sendImageData(event.sender, addon.curve(curImage.data, curves))
-})
+        // 遍历处理流程
+        let buffer = curImage.data
+        for (const name of processNames) {
+            if (!processInfo[name])
+            {
+                continue;
+            }
+            buffer = addon[name](buffer, processInfo[name])
+        }
+        sendImageData(event.sender, buffer)
+    })
+}

@@ -7,11 +7,6 @@
             "./addons/color.cc", "./addons/curve.cc", "./addons/post.cc"
         ],
         "defines": ['NAPI_DISABLE_CPP_EXCEPTIONS'],  # node-addon-api关闭C++异常
-        # "msvs_settings": {
-        #   "VCCLCompilerTool": {
-        #     "ExceptionHandling": 1
-        #   }
-        # },
         "include_dirs": [
             "D:/A/OpenCV/opencv/build/include",
             "<!@(node -p \"require('node-addon-api').include\")"
