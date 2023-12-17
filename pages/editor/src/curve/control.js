@@ -1,5 +1,6 @@
 // 曲线控制
 
+import { openPanel } from "../sidebar.js"
 import { calcCurve } from "./calc.js"
 
 const MIN_DIST = 4 // 控制点的最小间距
@@ -38,8 +39,24 @@ document.getElementById('channel-select').addEventListener('change', function ()
     switchChannel(this.value)
 })
 
-// FIXME: 调用初始化函数
-init()
+// 开/关面版
+document.getElementById('curve-btn').addEventListener('click', () => {
+    const panel = document.getElementById('curve-panel')
+    openPanel(
+        () => {
+            init()
+            panel.style.display = ''
+        },
+        () => {
+            panel.style.display = 'none'
+
+            for (let i = 0; i < controls.length; ++i) {
+                for (let j = 0; j < controls[i].length; ++j) {
+                    controls[i][j].remove()
+                }
+            }
+        })
+})
 
 /**
  * 初始化
@@ -125,7 +142,6 @@ function findPointIndex(controlPoints, target) {
  * x坐标必须满足相邻控制点的最小距离
  */
 function addControlPoint(controlPoints, x, y) {
-    console.log('add')
     // 找到第一个x大于该点的记录
     let left = 0
     let right = controlPoints.length

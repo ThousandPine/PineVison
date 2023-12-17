@@ -29,7 +29,7 @@ void colorTemp(cv::Mat &img, int n)
     cv::split(img, channels);
 
     // 调整B通道
-    channels.at(0) -= n;
+    channels.at(0) *= 1 - n / 200.0;
 
     // 合并
     cv::merge(channels, img);
@@ -43,7 +43,7 @@ void colorHue(cv::Mat &img, int n)
     cv::split(img, channels);
 
     // 调整G通道
-    channels.at(1) += n;
+    channels.at(1) *= 1 + n / 200.0;
 
     // 合并
     cv::merge(channels, img);

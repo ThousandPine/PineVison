@@ -1,9 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('win', {
-    minimize: () => ipcRenderer.send('win:minimize'),
-    maximize: () =>  ipcRenderer.invoke('win:maximize'),
-    close: () => ipcRenderer.send('win:close')
+contextBridge.exposeInMainWorld('state', {
+    back: () => ipcRenderer.send('state:back'),
+    forward: () =>  ipcRenderer.send('state:forward'),
+    save: () => ipcRenderer.send('state:save')
 })
 
 const img = new Image()
@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('img', {
     init: () => ipcRenderer.send('image:init'),
     open: () => ipcRenderer.send('image:open'),
     save: () => ipcRenderer.send('image:save'),
+    get: () => ipcRenderer.send('image:get'),
     addImgLoadListener: (listener) => img.addEventListener('load', listener),
     crop: (crop) => ipcRenderer.send('image:crop', crop),
     rotate: (clockwish) => ipcRenderer.send('image:rotate', clockwish),
@@ -23,7 +24,7 @@ contextBridge.exposeInMainWorld('img', {
     post: (post) => ipcRenderer.send('image:post', post),
 })
 
-ipcRenderer.addListener('image:update', (evnet, imgBuffer) => {
+ipcRenderer.addListener('image:update', (event, imgBuffer) => {
     const blob = new Blob([imgBuffer], { type: 'image' })
     img.src = URL.createObjectURL(blob)
 })

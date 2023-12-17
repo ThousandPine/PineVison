@@ -1,3 +1,5 @@
+import { openPanel } from "./sidebar.js"
+
 const keys = ['bright', 'contrast', 'exposure', 'equalize']
 const inputs = {}
 const values = {}
@@ -23,3 +25,20 @@ function applyLight() {
     console.log(args)
     window.img.light(args)
 }
+
+document.getElementById('light-btn').addEventListener('click', () => {
+    const panel = document.getElementById('light-panel')
+    openPanel(
+        () => {
+            panel.style.display = ''
+
+            for (const key of keys) {
+                inputs[key].value = 0
+                values[key].innerHTML = 0
+            }
+        },
+        () => {
+            panel.style.display = 'none'
+        }
+    )
+})

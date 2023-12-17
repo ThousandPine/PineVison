@@ -25,9 +25,7 @@ Napi::Value crop(const Napi::CallbackInfo &info)
 
     // 裁剪图像
     cv::Rect roi(x, y, width, height);
-    cv::Mat croppedImg = img(roi);
-
-    return Mat2NapiBuffer(env, croppedImg);
+    return Mat2NapiBuffer(env, img(roi));
 }
 
 /* 旋转图像 */
@@ -49,10 +47,9 @@ Napi::Value rotate(const Napi::CallbackInfo &info)
     bool clockwish = info[1].As<Napi::Boolean>().Value();
 
     // 旋转图像
-    cv::Mat result;
-    cv::rotate(img, result, clockwish ? cv::ROTATE_90_CLOCKWISE : cv::ROTATE_90_COUNTERCLOCKWISE);
+    cv::rotate(img, img, clockwish ? cv::ROTATE_90_CLOCKWISE : cv::ROTATE_90_COUNTERCLOCKWISE);
 
-    return Mat2NapiBuffer(env, result);
+    return Mat2NapiBuffer(env, img);
 }
 
 /* 翻转图像 */

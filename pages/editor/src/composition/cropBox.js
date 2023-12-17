@@ -121,8 +121,6 @@ function applyCropMargin() {
     // 更新面版信息
     const crop = getCropInfo()
     updatePanel(crop)
-    // 更新主线程消息
-    window.img.crop(crop)
 }
 
 /* 通过偏移量调整裁剪框（用于鼠标拖拽） */

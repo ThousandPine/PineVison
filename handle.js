@@ -5,49 +5,20 @@ const fs = require('fs')
 const addon = require('./build/Release/addon')
 const { send, eventNames } = require('node:process')
 
-ipcMain.on('win:minimize', (event) => {
-    const win = BrowserWindow.fromWebContents(event.sender)
-    win.minimize()
-})
+let state
 
-ipcMain.handle('win:maximize', (event) => {
-    const win = BrowserWindow.fromWebContents(event.sender)
-
-    if (win.isMaximized()) {
-        win.unmaximize()
-        return false
-    } else {
-        win.maximize()
-        return true
-    }
-})
-
-ipcMain.on('win:close', (event) => {
-    const win = BrowserWindow.fromWebContents(event.sender)
-    win.close()
-})
-
-// 记录当前图像信息
-const curImage = {}
-
-function sendImageData(sender, imgBuffer) {
+function sendImageData(sender, data) {
     console.log('send img')
-    sender.send('image:update', imgBuffer)
-}
-
-function loadImage(path) {
-    curImage.path = path
-    curImage.data = fs.readFileSync(curImage.path)
-    return curImage.data
+    sender.send('image:update', data ? data : state.current())
 }
 
 ipcMain.on('image:init', (event) => {
-    curImage.data = loadImage(path.join(__dirname, 'test.jpg'))
-    sendImageData(event.sender, curImage.data)
+    imgPath = path.join(__dirname, 'test.jpg')
+    state = new State(fs.readFileSync(imgPath))
+    sendImageData(event.sender)
 })
 
 ipcMain.on('image:open', (event) => {
-
     const options = {
         title: '选择图片',
         filters: [
@@ -55,51 +26,74 @@ ipcMain.on('image:open', (event) => {
         ],
         properties: ['openFile']
     }
-    const path = dialog.showOpenDialogSync(options)
-    curImage.data = loadImage(path[0])
-    sendImageData(event.sender, curImage.data)
+    imgPath = dialog.showOpenDialogSync(options)
+    state = new State(fs.readFileSync(imgPath))
+    sendImageData(event.sender)
 })
 
 ipcMain.on('image:save', (event) => {
-    if (curImage.crop) {
-        curImage.data = addon.crop(curImage.data, curImage.crop)
-        sendImageData(event.sender, curImage.data)
-    }
-    fs.writeFileSync(path.join(__dirname, 'out.png'), curImage.data)
+    fs.writeFileSync(imgPath.join(__dirname, 'out.png'), state.current())
 })
 
-ipcMain.on('image:crop', (event, crop) => {
-    curImage.crop = crop
+ipcMain.on('image:get', (event) => {
+    sendImageData(event.sender)
 })
 
-ipcMain.on('image:rotate', (event, clockwish) => {
-    curImage.data = addon.rotate(curImage.data, clockwish)
-    sendImageData(event.sender, curImage.data)
-})
-
-ipcMain.on('image:flip', (event, flipType) => {
-    curImage.data = addon.flip(curImage.data, flipType)
-    sendImageData(event.sender, curImage.data)
-})
-
-/* 处理流水线 */
-const processNames = ['light', 'color', 'curve', 'post']
-const processInfo = {}
+/* 图像处理事件 */
+const processNames = ['crop', 'rotate', 'flip', 'light', 'color', 'curve', 'post']
 
 for (const name of processNames) {
-    ipcMain.on('image:' + name, (event, info) => {
-        // 保存信息
-        processInfo[name] = info
-
-        // 遍历处理流程
-        let buffer = curImage.data
-        for (const name of processNames) {
-            if (!processInfo[name])
-            {
-                continue;
-            }
-            buffer = addon[name](buffer, processInfo[name])
-        }
-        sendImageData(event.sender, buffer)
+    ipcMain.on('image:' + name, (event, args) => {
+        state.temp = addon[name](state.current(), args)
+        sendImageData(event.sender, state.temp)
     })
+}
+
+/*  */
+ipcMain.on('state:back', (event) => {
+    state.back()
+    sendImageData(event.sender)
+})
+ipcMain.on('state:forward', (event) => {
+    state.forward()
+    sendImageData(event.sender)
+})
+ipcMain.on('state:save', (event) => {
+    state.save()
+})
+
+class State {
+    constructor(img) {
+        this.temp = img
+        this.stack = [img]
+        this.index = 0
+    }
+
+    current() {
+        return this.stack[this.index]
+    }
+
+    save() {
+        if (this.index < this.stack.length - 1) {
+            this.stack.splice(this.index + 1, this.stack.length - 1 - this.index)
+        }
+
+        if (this.temp) {
+            this.stack.push(this.temp)
+            ++this.index
+        }
+        return
+    }
+
+    back() {
+        if (this.index > 0) {
+            --this.index
+        }
+    }
+
+    forward() {
+        if (this.index < this.stack.length - 1) {
+            ++this.index
+        }
+    }
 }
