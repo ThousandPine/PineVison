@@ -3,7 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron')
 contextBridge.exposeInMainWorld('state', {
     back: () => ipcRenderer.send('state:back'),
     forward: () =>  ipcRenderer.send('state:forward'),
-    save: () => ipcRenderer.send('state:save')
+    apply: () => ipcRenderer.send('state:save')
 })
 
 const img = new Image()
@@ -23,6 +23,7 @@ contextBridge.exposeInMainWorld('img', {
     curve: (curves) => ipcRenderer.send('image:curve', curves),
     post: (post) => ipcRenderer.send('image:post', post),
     watermark: (watermark) => ipcRenderer.send('image:watermark', watermark),
+    selectWatermark: () => ipcRenderer.invoke('image:selectWatermark'),
 })
 
 ipcRenderer.addListener('image:update', (event, imgBuffer) => {

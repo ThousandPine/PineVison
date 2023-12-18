@@ -13,7 +13,7 @@ function sendImageData(sender, data) {
 }
 
 ipcMain.on('image:init', (event) => {
-    imgPath = path.join(__dirname, 'test.jpg')
+    const imgPath = path.join(__dirname, 'test.jpg')
     state = new State(fs.readFileSync(imgPath))
     sendImageData(event.sender)
 })
@@ -26,21 +26,39 @@ ipcMain.on('image:open', (event) => {
         ],
         properties: ['openFile']
     }
-    imgPath = dialog.showOpenDialogSync(options)
-    state = new State(fs.readFileSync(imgPath))
+    const path = dialog.showOpenDialogSync(options)
+    if (!path) {
+        return
+    }
+
+    state = new State(fs.readFileSync(path[0]))
     sendImageData(event.sender)
 })
 
+// TODO: 
 ipcMain.on('image:save', (event) => {
-    fs.writeFileSync(imgPath.join(__dirname, 'out.png'), state.current())
+    // fs.writeFileSync(state.path.join(__dirname, 'out.png'), state.current())
 })
 
 ipcMain.on('image:get', (event) => {
     sendImageData(event.sender)
 })
 
+ipcMain.handle('image:selectWatermark', (event) => {
+    const options = {
+        title: '选择水印图片',
+        filters: [
+            { name: 'Images', extensions: ['jpg', 'png'] }
+        ],
+        properties: ['openFile']
+    }
+    const path = dialog.showOpenDialogSync(options)[0]
+    state.watermark = fs.readFileSync(path)
+    return path
+})
+
 /* 图像处理事件 */
-const processNames = ['crop', 'rotate', 'flip', 'light', 'color', 'curve', 'post', 'watermark']
+const processNames = ['crop', 'rotate', 'flip', 'light', 'color', 'curve', 'post']
 
 for (const name of processNames) {
     ipcMain.on('image:' + name, (event, args) => {
@@ -48,6 +66,14 @@ for (const name of processNames) {
         sendImageData(event.sender, state.temp)
     })
 }
+
+ipcMain.on('image:watermark', (event, args) => {
+    if (!state.watermark) {
+        return
+    }
+    state.temp = addon.watermark(state.current(), state.watermark, args)
+    sendImageData(event.sender, state.temp)
+})
 
 /*  */
 ipcMain.on('state:back', (event) => {
@@ -60,6 +86,7 @@ ipcMain.on('state:forward', (event) => {
 })
 ipcMain.on('state:save', (event) => {
     state.save()
+    state.watermark = null
 })
 
 class State {

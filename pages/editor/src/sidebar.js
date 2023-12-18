@@ -17,7 +17,7 @@ export function openPanel(openFunc, closeFunc) {
 
 document.getElementById('apply-btn').addEventListener('click', () => {
     close()
-    window.state.save()
+    window.state.apply()
     navigationBar.style.display = ''
     commitBar.style.display = 'none'
 })
