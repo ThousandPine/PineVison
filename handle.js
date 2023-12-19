@@ -12,13 +12,7 @@ function sendImageData(sender, data) {
     sender.send('image:update', data ? data : state.current())
 }
 
-ipcMain.on('image:init', (event) => {
-    const imgPath = path.join(__dirname, 'test.jpg')
-    state = new State(fs.readFileSync(imgPath))
-    sendImageData(event.sender)
-})
-
-ipcMain.on('image:open', (event) => {
+ipcMain.handle('image:open', (event) => {
     const options = {
         title: '选择图片',
         filters: [
@@ -27,17 +21,24 @@ ipcMain.on('image:open', (event) => {
         properties: ['openFile']
     }
     const path = dialog.showOpenDialogSync(options)
-    if (!path) {
-        return
+    if (path) {
+        state = new State(fs.readFileSync(path[0]))
+        sendImageData(event.sender)
+        return true
     }
-
-    state = new State(fs.readFileSync(path[0]))
-    sendImageData(event.sender)
+    return false
 })
 
 // TODO: 
 ipcMain.on('image:save', (event) => {
-    // fs.writeFileSync(state.path.join(__dirname, 'out.png'), state.current())
+    const options = {
+        filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]
+      }
+    const path = dialog.showSaveDialogSync(options)
+    console.log(path)
+    if (path) {
+        fs.writeFileSync(path, state.current())
+    }
 })
 
 ipcMain.on('image:get', (event) => {

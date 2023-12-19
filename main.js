@@ -15,7 +15,7 @@ const createWindow = () => {
     })
 
     // 加载 index.html
-    mainWindow.loadFile('./pages/editor.html')
+    mainWindow.loadFile('./pages/index.html')
 
     // 打开开发工具
     // mainWindow.webContents.openDevTools()

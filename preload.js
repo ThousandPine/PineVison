@@ -10,8 +10,7 @@ const img = new Image()
 
 contextBridge.exposeInMainWorld('img', {
     curImage: img,
-    init: () => ipcRenderer.send('image:init'),
-    open: () => ipcRenderer.send('image:open'),
+    open: () => ipcRenderer.invoke('image:open'),
     save: () => ipcRenderer.send('image:save'),
     get: () => ipcRenderer.send('image:get'),
     addImgLoadListener: (listener) => img.addEventListener('load', listener),
