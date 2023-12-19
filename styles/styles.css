@@ -1,5 +1,5 @@
-@import url(index.css);
+@import url(editor.css);
 @import url(sidebar.css);
 @import url(curve.css);
 @import url(cropper.css);
-@import url(panels/panel.css);
+@import url(panel.css);
