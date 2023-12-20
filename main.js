@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const path = require('node:path')
 const addons = require('./build/Release/addon')
 
@@ -13,6 +13,9 @@ const createWindow = () => {
             preload: path.join(__dirname, './preload.js')
         }
     })
+
+    // 清空菜单栏
+    Menu.setApplicationMenu(new Menu())
 
     // 加载 index.html
     mainWindow.loadFile('./pages/index.html')

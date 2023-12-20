@@ -1,4 +1,4 @@
-const { ipcMain, BrowserWindow } = require('electron')
+const { ipcMain, BrowserWindow, Menu } = require('electron')
 const { dialog } = require('electron')
 const path = require('node:path')
 const fs = require('fs')
@@ -7,12 +7,47 @@ const { send, eventNames } = require('node:process')
 
 let state
 
+function setMenu() {
+    let menu = Menu.buildFromTemplate([
+        {
+            label: '文件',
+            submenu: [
+                { label: '打开', accelerator: 'CmdOrCtrl+O', click: () => openImage() },
+                { label: '保存', accelerator: 'CmdOrCtrl+S', click: () => saveImage() }
+            ]
+        },
+        {
+            label: '编辑',
+            submenu: [
+                { label: '撤销', accelerator: 'CmdOrCtrl+Z', click: () => console.log('子菜单3被点击') },
+                { label: '重做', accelerator: 'CmdOrCtrl+R', click: () => console.log('子菜单4被点击') }
+            ]
+        }
+    ])
+
+    Menu.setApplicationMenu(menu)
+}
+
 function sendImageData(sender, data) {
     console.log('send img')
     sender.send('image:update', data ? data : state.current())
 }
 
-ipcMain.handle('image:open', (event) => {
+function saveImage() {
+    const options = {
+        filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]
+    }
+    const path = dialog.showSaveDialogSync(options)
+    if (path) {
+        fs.writeFileSync(path, state.current())
+    }
+
+    ipcMain.on('image:get', (event) => {
+        sendImageData(event.sender)
+    })
+}
+
+function openImage(sender) {
     const options = {
         title: '选择图片',
         filters: [
@@ -23,22 +58,18 @@ ipcMain.handle('image:open', (event) => {
     const path = dialog.showOpenDialogSync(options)
     if (path) {
         state = new State(fs.readFileSync(path[0]))
-        sendImageData(event.sender)
+        sendImageData(sender ? sender : BrowserWindow.getFocusedWindow().webContents)
         return true
     }
     return false
-})
+}
 
-// TODO: 
-ipcMain.on('image:save', (event) => {
-    const options = {
-        filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]
-      }
-    const path = dialog.showSaveDialogSync(options)
-    console.log(path)
-    if (path) {
-        fs.writeFileSync(path, state.current())
+ipcMain.handle('image:open', (event) => {
+    if (openImage()) {
+        setMenu()
+        return true
     }
+    return false
 })
 
 ipcMain.on('image:get', (event) => {
