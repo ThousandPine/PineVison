@@ -18,6 +18,8 @@ window.img.addImgLoadListener(() => {
     updatePanel(getCropInfo())
 })
 
+window.img.get()
+
 /* 显示裁剪框 */
 export function enableCropBox() {
     cropCanvas.style.display = ''
