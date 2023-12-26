@@ -10,6 +10,10 @@ body {
     user-select: none;
 }
 
+h2 {
+    color: #1872BC;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -20,7 +24,6 @@ input::-webkit-inner-spin-button {
     flex-direction: row;
     flex-grow: 1;
     max-height: 100%;
-    background-color: green;
 }
 
 .preview {
@@ -30,12 +33,10 @@ input::-webkit-inner-spin-button {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    background-color: rgb(81, 123, 111);
+    background-color: #B2B5B3;
     padding: 15px;
 }
 
-.panel-container {
-    /* max-width: 320px;
-    min-width: 320px; */
-    background-color: rgb(54, 54, 85);
+#preview-canvas {
+    box-shadow: 8px 9px 12px 4px #545758;
 }

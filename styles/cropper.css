@@ -135,8 +135,6 @@
 
 
 .cropper-dashed {
-    display: none;
-    /* 暂时关闭虚线框 */
     border: 0 dashed #eee;
     opacity: .5;
     position: absolute;

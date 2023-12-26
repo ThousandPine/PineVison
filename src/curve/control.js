@@ -82,6 +82,7 @@ function init() {
     }
 
     // 设置初始通道为all
+    document.getElementById('channel-select').value = 3
     switchChannel(3)
 
     // 绘制曲线
@@ -290,7 +291,7 @@ function drawCurve() {
 
     // 绘制背景棋盘格
     ctx.lineWidth = 0.5
-    ctx.strokeStyle = '#6b968a'
+    ctx.strokeStyle = '#d8ddde'
     for (let i = 0, cellSize = canvas.width / 4; i < 4; ++i) {
         for (let j = 0; j < 4; ++j) {
             ctx.beginPath()
@@ -301,7 +302,7 @@ function drawCurve() {
 
     // 绘制对角线
     ctx.lineWidth = 1
-    ctx.strokeStyle = '#6b968a'
+    ctx.strokeStyle = '#d8ddde'
     ctx.beginPath()
     ctx.moveTo(0, 0)
     ctx.lineTo(canvas.width, canvas.height)
@@ -309,7 +310,7 @@ function drawCurve() {
 
 
     // 四个通道对应的颜色
-    const colors = ['blue', '#9ed6a1', 'red', 'white']
+    const colors = ['blue', 'green', 'red', 'white']
 
     // channel为 b,g,r 时只绘制单一曲线
     if (channel < 3) {
