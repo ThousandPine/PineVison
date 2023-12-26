@@ -1,33 +1,63 @@
-const { ipcMain, BrowserWindow } = require('electron')
+const { ipcMain, BrowserWindow, Menu } = require('electron')
 const { dialog } = require('electron')
 const path = require('node:path')
 const fs = require('fs')
 const addon = require('./build/Release/addon')
-const { send } = require('node:process')
+const { send, eventNames } = require('node:process')
 
+let state
 
-// 记录当前图像信息
-const curImage = {}
+function setMenu() {
+    let menu = Menu.buildFromTemplate([
+        {
+            label: '文件',
+            submenu: [
+                { label: '打开', accelerator: 'CmdOrCtrl+O', click: () => openImage() },
+                { label: '保存', accelerator: 'CmdOrCtrl+S', click: () => saveImage() }
+            ]
+        },
+        {
+            label: '编辑',
+            submenu: [
+                {
+                    label: '撤销', accelerator: 'CmdOrCtrl+Z', click: () => {
+                        state.back()
+                        sendImageData(BrowserWindow.getFocusedWindow().webContents)
+                    }
+                },
+                {
+                    label: '重做', accelerator: 'CmdOrCtrl+R', click: () => {
+                        state.forward()
+                        sendImageData(BrowserWindow.getFocusedWindow().webContents)
+                    }
+                }
+            ]
+        }
+    ])
 
-function sendImageData(sender, imgBuffer) {
+    Menu.setApplicationMenu(menu)
+}
+
+function sendImageData(sender, data) {
     console.log('send img')
-    sender.send('image:update', imgBuffer)
+    sender.send('image:update', data ? data : state.current())
 }
 
-function loadImage(path) {
-    curImage.path = path
-    curImage.data = fs.readFileSync(curImage.path)
-    return curImage.data
+function saveImage() {
+    const options = {
+        filters: [{ name: 'Images', extensions: ['jpg', 'png'] }]
+    }
+    const path = dialog.showSaveDialogSync(options)
+    if (path) {
+        fs.writeFileSync(path, state.current())
+    }
+
+    ipcMain.on('image:get', (event) => {
+        sendImageData(event.sender)
+    })
 }
 
-ipcMain.on('image:init', (event) => {
-
-    const buffer = loadImage(path.join(__dirname, 'test.jpg'))
-    sendImageData(event.sender, buffer)
-})
-
-ipcMain.on('image:open', (event) => {
-    
+function openImage(sender) {
     const options = {
         title: '选择图片',
         filters: [
@@ -36,61 +66,95 @@ ipcMain.on('image:open', (event) => {
         properties: ['openFile']
     }
     const path = dialog.showOpenDialogSync(options)
-    const buffer = loadImage(path[0])
-    
-    sendImageData(event.sender, buffer)
-})
-
-ipcMain.on('image:save', (event, crop) => {
-    if (crop) {
-        curImage.data = addon.crop(curImage.data, crop)
-        sendImageData(event.sender, curImage.data)
+    if (path) {
+        state = new State(fs.readFileSync(path[0]))
+        sendImageData(sender ? sender : BrowserWindow.getFocusedWindow().webContents)
+        return true
     }
-    fs.writeFileSync(path.join(__dirname, 'out.png'), curImage.data)
+    return false
+}
+
+ipcMain.handle('image:open', (event) => {
+    if (openImage()) {
+        setMenu()
+        return true
+    }
+    return false
 })
 
-ipcMain.on('image:rotate', (evnet, clockwish) => {
-    curImage.data = addon.rotate(curImage.data, clockwish)
-    sendImageData(evnet.sender, curImage.data)
+ipcMain.on('image:get', (event) => {
+    sendImageData(event.sender)
 })
 
-ipcMain.on('image:flip', (evnet, flipType) => {
-    curImage.data = addon.flip(curImage.data, flipType)
-    sendImageData(evnet.sender, curImage.data)
+ipcMain.handle('image:selectWatermark', (event) => {
+    const options = {
+        title: '选择水印图片',
+        filters: [
+            { name: 'Images', extensions: ['jpg', 'png'] }
+        ],
+        properties: ['openFile']
+    }
+    const path = dialog.showOpenDialogSync(options)[0]
+    state.watermark = fs.readFileSync(path)
+    return path
 })
 
-ipcMain.on('image:bc', (event, bright, contrast) => {
-    sendImageData(event.sender, addon.brightContrast(curImage.data, bright, contrast))
+/* 图像处理事件 */
+const processNames = ['crop', 'rotate', 'flip', 'light', 'color', 'curve', 'post']
+
+for (const name of processNames) {
+    ipcMain.on('image:' + name, (event, args) => {
+        state.temp = addon[name](state.current(), args)
+        sendImageData(event.sender, state.temp)
+    })
+}
+
+ipcMain.on('image:watermark', (event, args) => {
+    if (!state.watermark) {
+        return
+    }
+    state.temp = addon.watermark(state.current(), state.watermark, args)
+    sendImageData(event.sender, state.temp)
 })
 
-ipcMain.on('image:exposure', (event, exposure) => {
-    sendImageData(event.sender, addon.exposure(curImage.data, exposure))
+/*  */
+ipcMain.on('state:save', (event) => {
+    state.save()
+    state.watermark = null
 })
 
-ipcMain.on('image:saturation', (event, saturation) => {
-    sendImageData(event.sender, addon.saturation(curImage.data, saturation))
-})
+class State {
+    constructor(img) {
+        this.temp = img
+        this.stack = [img]
+        this.index = 0
+    }
 
-ipcMain.on('image:colorTemp', (event, colorTemp) => {
-    sendImageData(event.sender, addon.colorTemp(curImage.data, colorTemp))
-})
+    current() {
+        return this.stack[this.index]
+    }
 
-ipcMain.on('image:colorHue', (event, colorHue) => {
-    sendImageData(event.sender, addon.colorHue(curImage.data, colorHue))
-})
+    save() {
+        if (this.index < this.stack.length - 1) {
+            this.stack.splice(this.index + 1, this.stack.length - 1 - this.index)
+        }
 
-ipcMain.on('image:sharpen', (event, sharpen) => {
-    sendImageData(event.sender, addon.sharpen(curImage.data, sharpen))
-})
+        if (this.temp) {
+            this.stack.push(this.temp)
+            ++this.index
+        }
+        return
+    }
 
-ipcMain.on('image:blur', (event, blur) => {
-    sendImageData(event.sender, addon.blur(curImage.data, blur))
-})
+    back() {
+        if (this.index > 0) {
+            --this.index
+        }
+    }
 
-ipcMain.on('image:equalizeHist', (event) => {
-    sendImageData(event.sender, addon.equalizeHist(curImage.data))
-})
-
-ipcMain.on('image:curve', (event, curves) => {
-    sendImageData(event.sender, addon.curve(curImage.data, curves))
-})
+    forward() {
+        if (this.index < this.stack.length - 1) {
+            ++this.index
+        }
+    }
+}

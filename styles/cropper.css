@@ -1,4 +1,10 @@
-.cropper-canvas {
+#preview-canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.cropper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -129,8 +135,6 @@
 
 
 .cropper-dashed {
-    display: none;
-    /* 暂时关闭虚线框 */
     border: 0 dashed #eee;
     opacity: .5;
     position: absolute;

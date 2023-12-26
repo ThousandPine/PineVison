@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const path = require('node:path')
 const addons = require('./build/Release/addon')
 
@@ -7,14 +7,18 @@ const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        minWidth: 600,
+        minHeight: 600,
         webPreferences: {
             preload: path.join(__dirname, './preload.js')
         }
     })
 
+    // 清空菜单栏
+    Menu.setApplicationMenu(new Menu())
+
     // 加载 index.html
-    mainWindow.loadFile('./pages/editor/index.html')
-    // mainWindow.loadFile('./pages/editor/curve/curve.html')
+    mainWindow.loadFile('./pages/index.html')
 
     // 打开开发工具
     // mainWindow.webContents.openDevTools()

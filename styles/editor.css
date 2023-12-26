@@ -1,0 +1,42 @@
+html,
+body {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    background-color: #202020;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    user-select: none;
+}
+
+h2 {
+    color: #1872BC;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.editor {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    max-height: 100%;
+}
+
+.preview {
+    display: flex;
+    /* 这个是重点，默认的row会导致某些情况下高度限制失效 */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    background-color: #B2B5B3;
+    padding: 15px;
+}
+
+#preview-canvas {
+    box-shadow: 8px 9px 12px 4px #545758;
+}

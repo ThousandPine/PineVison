@@ -1,8 +1,9 @@
 /// 裁剪框行为
 
+import { enablePreview, disablePreview } from '../preview.js'
 import { updatePanel } from './panel.js'
 
-const cropCanvas = document.querySelector('.cropper-canvas')
+const cropCanvas = document.querySelector('.cropper')
 const cropBox = document.querySelector('.cropper-crop-box')
 const cropBoxImg = document.querySelector('.crop-box-img')
 const cropMaskImg = document.querySelector('.bg-mask-img')
@@ -11,25 +12,25 @@ const CROP_RESERVE = 10 // 最小裁剪区域百分比
 const cropMargin = { top: 0, right: 0, bottom: 0, left: 0 } // 记录裁剪框边界距离（百分比）
 let curImage = window.img.curImage
 
-document.getElementById('test-btn').addEventListener('click', async () => {
-    // window.img.save(getCropInfo())
-})
-
 // 添加图像更新事件
 window.img.addImgLoadListener(() => {
     cropBoxImg.src = cropMaskImg.src = curImage.src
     updatePanel(getCropInfo())
 })
 
+window.img.get()
+
 /* 显示裁剪框 */
 export function enableCropBox() {
     cropCanvas.style.display = ''
+    disablePreview()
     applyCropMargin()
 }
 
 /* 关闭裁剪框 */
 export function disableCropBox() {
     cropCanvas.style.display = 'none'
+    enablePreview()
 }
 
 /* 设置裁剪框位置 */
@@ -103,7 +104,7 @@ export function setCropSize(height, width) {
 }
 
 /* 裁剪框信息 */
-const getCropInfo = () => ({
+export const getCropInfo = () => ({
     x: parseInt(cropMargin.left * curImage.width / 100),
     y: parseInt(cropMargin.top * curImage.height / 100),
     height: parseInt((100 - cropMargin.top - cropMargin.bottom) * curImage.height / 100),
@@ -120,7 +121,8 @@ function applyCropMargin() {
     // 设置内部图像显示区域
     cropBoxImg.style.clipPath = `inset(${cropMargin.top}% ${cropMargin.right}% ${cropMargin.bottom}% ${cropMargin.left}%)`
     // 更新面版信息
-    updatePanel(getCropInfo())
+    const crop = getCropInfo()
+    updatePanel(crop)
 }
 
 /* 通过偏移量调整裁剪框（用于鼠标拖拽） */

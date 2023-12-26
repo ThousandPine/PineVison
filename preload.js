@@ -1,27 +1,28 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
+contextBridge.exposeInMainWorld('state', {
+    apply: () => ipcRenderer.send('state:save')
+})
+
 const img = new Image()
 
 contextBridge.exposeInMainWorld('img', {
     curImage: img,
-    init: () => ipcRenderer.send('image:init'),
-    open: () => ipcRenderer.send('image:open'),
-    save: (crop) => ipcRenderer.send('image:save', crop),
+    open: () => ipcRenderer.invoke('image:open'),
+    get: () => ipcRenderer.send('image:get'),
     addImgLoadListener: (listener) => img.addEventListener('load', listener),
+    crop: (crop) => ipcRenderer.send('image:crop', crop),
     rotate: (clockwish) => ipcRenderer.send('image:rotate', clockwish),
     flip: (flipType) => ipcRenderer.send('image:flip', flipType),
-    brightContrast: (bright, contrast) => ipcRenderer.send('image:bc', bright, contrast),
-    exposure: (exposure) => ipcRenderer.send('image:exposure', exposure),
-    saturation: (saturation) => ipcRenderer.send('image:saturation', saturation),
-    colorTemp: (colorTemp) => ipcRenderer.send('image:colorTemp', colorTemp),
-    colorHue: (colorHue) => ipcRenderer.send('image:colorHue', colorHue),
-    sharpen: (sharpen) => ipcRenderer.send('image:sharpen', sharpen),
-    blur: (blur) => ipcRenderer.send('image:blur', blur),
-    equalizeHist: () => ipcRenderer.send('image:equalizeHist'),
+    light: (light) => ipcRenderer.send('image:light', light),
+    color: (color) => ipcRenderer.send('image:color', color),
     curve: (curves) => ipcRenderer.send('image:curve', curves),
+    post: (post) => ipcRenderer.send('image:post', post),
+    watermark: (watermark) => ipcRenderer.send('image:watermark', watermark),
+    selectWatermark: () => ipcRenderer.invoke('image:selectWatermark'),
 })
 
-ipcRenderer.addListener('image:update', (evnet, imgBuffer) => {
+ipcRenderer.addListener('image:update', (event, imgBuffer) => {
     const blob = new Blob([imgBuffer], { type: 'image' })
     img.src = URL.createObjectURL(blob)
 })

@@ -8,7 +8,7 @@
 inline cv::Mat NapiBuffer2Mat(const Napi::Buffer<uint8_t> &buffer)
 {
     const std::vector<uint8_t> imgData(buffer.Data(), buffer.Data() + buffer.Length());
-    return cv::imdecode(imgData, cv::IMREAD_UNCHANGED);
+    return cv::imdecode(imgData, cv::IMREAD_COLOR);
 }
 
 /* 从cv::Mat构建Napi::Buffer */

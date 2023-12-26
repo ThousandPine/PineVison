@@ -1,5 +1,6 @@
 // 曲线控制
 
+import { openPanel } from "../sidebar.js"
 import { calcCurve } from "./calc.js"
 
 const MIN_DIST = 4 // 控制点的最小间距
@@ -10,7 +11,6 @@ const ctx = canvas.getContext("2d")
 let curveApplyTimer = null  // 曲线调色定时器
 let curves = null           // 二维数组，按照 b,g,r,all 的顺序存储曲线映射
 let controls = null         // 二维数组，按照 b,g,r,all 的顺序存储控制点数组
-let curControls = null      // 当前控制点数组
 let channel = 3             // 当前通道
 
 // 画布宽高设为255，对应[0~255]的映射
@@ -39,11 +39,27 @@ document.getElementById('channel-select').addEventListener('change', function ()
     switchChannel(this.value)
 })
 
-// FIXME: 调用初始化函数
-init()
+// 开/关面版
+document.getElementById('curve-btn').addEventListener('click', () => {
+    const panel = document.getElementById('curve-panel')
+    openPanel(
+        () => {
+            init()
+            panel.style.display = ''
+        },
+        () => {
+            panel.style.display = 'none'
+
+            for (let i = 0; i < controls.length; ++i) {
+                for (let j = 0; j < controls[i].length; ++j) {
+                    controls[i][j].remove()
+                }
+            }
+        })
+})
 
 /**
- * TODO: 初始化
+ * 初始化
  */
 function init() {
 
@@ -66,16 +82,12 @@ function init() {
     }
 
     // 设置初始通道为all
+    document.getElementById('channel-select').value = 3
     switchChannel(3)
 
     // 绘制曲线
     drawCurve()
 }
-
-/**
- * TODO: 将面版转为类
- */
-
 
 /**
  * 切换当前编辑通道
@@ -131,7 +143,6 @@ function findPointIndex(controlPoints, target) {
  * x坐标必须满足相邻控制点的最小距离
  */
 function addControlPoint(controlPoints, x, y) {
-    console.log('add')
     // 找到第一个x大于该点的记录
     let left = 0
     let right = controlPoints.length
@@ -280,7 +291,7 @@ function drawCurve() {
 
     // 绘制背景棋盘格
     ctx.lineWidth = 0.5
-    ctx.strokeStyle = 'gray'
+    ctx.strokeStyle = '#d8ddde'
     for (let i = 0, cellSize = canvas.width / 4; i < 4; ++i) {
         for (let j = 0; j < 4; ++j) {
             ctx.beginPath()
@@ -291,7 +302,7 @@ function drawCurve() {
 
     // 绘制对角线
     ctx.lineWidth = 1
-    ctx.strokeStyle = 'gray'
+    ctx.strokeStyle = '#d8ddde'
     ctx.beginPath()
     ctx.moveTo(0, 0)
     ctx.lineTo(canvas.width, canvas.height)
@@ -351,7 +362,6 @@ function applyCurve() {
     }
 
     curveApplyTimer = setTimeout(() => {
-        console.log(curves)
         window.img.curve(curves)
         curveApplyTimer = null;
     }, 200);  // 设定最小执行间隔为200毫秒

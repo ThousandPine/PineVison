@@ -1,16 +1,14 @@
-.curve-panel {
-    background-color: gray;
-}
-
 #curve-canvas-container {
     display: flex;
     position: relative;
     background-color: black;
     margin: 20px;
+    width: fit-content;
+    height: fit-content;
 }
 
 #curve-canvas {
-    background-color: #8b8b8b;
+    background-color: #b5bcc0;
 }
 
 .curve-control-point {

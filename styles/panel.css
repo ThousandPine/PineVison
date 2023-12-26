@@ -1,0 +1,19 @@
+.panel {
+    max-width: 320px;
+    min-width: 320px;
+    height: 100%;
+    padding: 10px;
+    background-color: #F0F2F3;
+}
+
+.number-component {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.slider-component {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}

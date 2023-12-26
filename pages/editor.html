@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self'; img-src 'self' blob:">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+    <title>PineVision (Dev)</title>
+</head>
+
+<body>
+    <div class="editor">
+        <div class="preview">
+            <canvas id="preview-canvas"></canvas>
+            <div class="cropper" style="display: none;">
+                <img class="cropper-image bg-mask-img" draggable="false">
+                <img class="cropper-image crop-box-img" draggable="false">
+                <div class="cropper-crop-box">
+                    <div class="cropper-dashed dashed-h"></div>
+                    <div class="cropper-dashed dashed-v"></div>
+                    <div class="cropper-point point-n"></div>
+                    <div class="cropper-point point-s"></div>
+                    <div class="cropper-point point-w"></div>
+                    <div class="cropper-point point-e"></div>
+                    <div class="cropper-line line-n"></div>
+                    <div class="cropper-line line-s"></div>
+                    <div class="cropper-line line-w"></div>
+                    <div class="cropper-line line-e"></div>
+                    <div class="cropper-point point-nw"></div>
+                    <div class="cropper-point point-ne"></div>
+                    <div class="cropper-point point-sw"></div>
+                    <div class="cropper-point point-se"></div>
+                    <div class="cropper-move"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-container">
+            <!-- 构图调节 -->
+            <div id="composition-panel" class="panel" style="display: none;">
+                <h2>构图</h2>
+                <h3>裁剪</h3>
+                <div class="number-component">
+                    <span>宽度</span>
+                    <span id="crop-width-value"></span>
+                </div>
+                <div class="number-component">
+                    <span>高度</span>
+                    <span id="crop-height-value"></span>
+                </div>
+                <div class="number-component">
+                    <span>位置X</span>
+                    <span id="crop-x-value"></span>
+                </div>
+                <div class="number-component">
+                    <span>位置Y</span>
+                    <span id="crop-y-value"></span>
+                </div>
+                <hr>
+                <h3>旋转</h3>
+                <div>
+                    <button id="rotate-left-btn" type="button">逆时针</button>
+                    <button id="rotate-right-btn" type="button">顺时针</button>
+                </div>
+                <hr>
+                <h3>翻转</h3>
+                <button id="flip-h-btn" type="button">水平</button>
+                <button id="flip-v-btn" type="button">垂直</button>
+            </div>
+            <!-- 光照调节 -->
+            <div id="light-panel" class="panel" style="display: none;">
+                <h2>光照</h2>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>亮度</span>
+                        <span id="bright-value">0</span>
+                    </div>
+                    <input id="bright-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>对比度</span>
+                        <span id="contrast-value">0</span>
+                    </div>
+                    <input id="contrast-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>曝光</span>
+                        <span id="exposure-value">0</span>
+                    </div>
+                    <input id="exposure-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>直方图均衡化</span>
+                        <span id="equalize-value">0</span>
+                    </div>
+                    <input id="equalize-input" type="range" min="0" max="1" value="0">
+                </div>
+            </div>
+            <!-- 色彩调节 -->
+            <div id="color-panel" class="panel" style="display: none;">
+                <h2>色彩</h2>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>饱和度</span>
+                        <span id="saturation-value">0</span>
+                    </div>
+                    <input id="saturation-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>色温</span>
+                        <span id="temp-value">0</span>
+                    </div>
+                    <input id="temp-input" type="range" min="-100" max="100" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>色调</span>
+                        <span id="hue-value">0</span>
+                    </div>
+                    <input id="hue-input" type="range" min="-100" max="100" value="0">
+                </div>
+            </div>
+            <!-- 曲线 -->
+            <div id="curve-panel" class="panel" style="display: none;">
+                <h2>曲线</h2>
+                <select id="channel-select">
+                    <option value="3">All</option>
+                    <option value="2">R</option>
+                    <option value="1">G</option>
+                    <option value="0">B</option>
+                </select>
+                <div id="curve-canvas-container">
+                    <canvas id="curve-canvas"></canvas>
+                </div>
+            </div>
+            <!-- 后处理 -->
+            <div id="post-panel" class="panel" style="display: none;">
+                <h2>后期处理</h2>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>平滑</span>
+                        <span id="blur-value">0</span>
+                    </div>
+                    <input id="blur-input" type="range" min="0" max="10" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>锐化</span>
+                        <span id="sharpen-value">0</span>
+                    </div>
+                    <input id="sharpen-input" type="range" min="0" max="100" value="0">
+                </div>
+            </div>
+            <!-- 水印 -->
+            <div id="watermark-panel" class="panel" style="display: none;">
+                <h2>添加水印</h2>
+                <div class="number-component">
+                    <span>图像</span>
+                    <button id="watermark-path-btn">选择图像</button>
+                </div>
+                <div class="number-component">
+                    <span>位置</span>
+                    <select id="watermark-pos-select">
+                        <option value="0">居中</option>
+                        <option value="1">左上</option>
+                        <option value="2">右上</option>
+                        <option value="3">右下</option>
+                        <option value="4">左下</option>
+                    </select>
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>缩放</span>
+                        <span id="watermark-zoom-value">0</span>
+                    </div>
+                    <input id="watermark-zoom-input" type="range" min="-90" max="200" value="0">
+                </div>
+                <div class="slider-component">
+                    <div class="number-component">
+                        <span>不透明度</span>
+                        <span id="watermark-opacity-value">50</span>
+                    </div>
+                    <input id="watermark-opacity-input" type="range" min="1" max="100" value="50">
+                </div>
+            </div>
+        </div>
+        <!-- 导航栏 -->
+        <div class="side-bar">
+            <div id="navigation-bar">
+                <button id="composition-btn" class="side-bar-btn">构图</button>
+                <button id="light-btn" class="side-bar-btn">光照</button>
+                <button id="color-btn" class="side-bar-btn">色彩</button>
+                <button id="curve-btn" class="side-bar-btn">曲线</button>
+                <button id="post-btn" class="side-bar-btn">后处理</button>
+                <button id="watermark-btn" class="side-bar-btn">水印</button>
+            </div>
+            <div id="commit-bar" style="display: none;">
+                <button id="apply-btn" class="side-bar-btn">确定</button>
+                <button id="cancel-btn" class="side-bar-btn">取消</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="../src/preview.js" type="module"></script>
+<script src="../src/sidebar.js" type="module"></script>
+<script src="../src/light.js" type="module"></script>
+<script src="../src/color.js" type="module"></script>
+<script src="../src/post.js" type="module"></script>
+<script src="../src/watermark.js" type="module"></script>
+<script src="../src/curve/control.js" type="module"></script>
+<script src="../src/composition/panel.js" type="module"></script>
+
+</html>
