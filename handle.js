@@ -19,8 +19,18 @@ function setMenu() {
         {
             label: '编辑',
             submenu: [
-                { label: '撤销', accelerator: 'CmdOrCtrl+Z', click: () => console.log('子菜单3被点击') },
-                { label: '重做', accelerator: 'CmdOrCtrl+R', click: () => console.log('子菜单4被点击') }
+                {
+                    label: '撤销', accelerator: 'CmdOrCtrl+Z', click: () => {
+                        state.back()
+                        sendImageData(BrowserWindow.getFocusedWindow().webContents)
+                    }
+                },
+                {
+                    label: '重做', accelerator: 'CmdOrCtrl+R', click: () => {
+                        state.forward()
+                        sendImageData(BrowserWindow.getFocusedWindow().webContents)
+                    }
+                }
             ]
         }
     ])
@@ -108,14 +118,6 @@ ipcMain.on('image:watermark', (event, args) => {
 })
 
 /*  */
-ipcMain.on('state:back', (event) => {
-    state.back()
-    sendImageData(event.sender)
-})
-ipcMain.on('state:forward', (event) => {
-    state.forward()
-    sendImageData(event.sender)
-})
 ipcMain.on('state:save', (event) => {
     state.save()
     state.watermark = null

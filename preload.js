@@ -1,8 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('state', {
-    back: () => ipcRenderer.send('state:back'),
-    forward: () =>  ipcRenderer.send('state:forward'),
     apply: () => ipcRenderer.send('state:save')
 })
 

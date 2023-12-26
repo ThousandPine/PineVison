@@ -27,6 +27,3 @@ document.getElementById('cancel-btn').addEventListener('click', () => {
     navigationBar.style.display = ''
     commitBar.style.display = 'none'
 })
-
-document.getElementById('forward-btn').addEventListener('click', () => window.state.forward())
-document.getElementById('back-btn').addEventListener('click', () => window.state.back())
