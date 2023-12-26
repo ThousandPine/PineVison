@@ -32,7 +32,14 @@ function setMenu() {
                     }
                 }
             ]
-        }
+        },
+        {
+            label: 'View',
+            submenu: [
+                { label: 'Reload', accelerator: 'CmdOrCtrl+Shift+R', click: () => BrowserWindow.getFocusedWindow().reload() },
+                { label: 'Toggle Developer Tools', accelerator: 'CmdOrCtrl+Shift+I', click: () => BrowserWindow.getFocusedWindow().webContents.toggleDevTools() }
+            ]
+        },
     ])
 
     Menu.setApplicationMenu(menu)
