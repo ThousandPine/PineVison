@@ -7,7 +7,7 @@ module.exports = {
     packageAfterExtract: async (config, buildPath, electronVersion, platform, arch) => {
       const path = require('path');
       const fs = require('fs-extra');
-      const src = 'D:/A/OpenCV/opencv/build/x64/vc15/bin/opencv_world454.dll';
+      const src = path.join(process.env.OPENCV_HOME, '/x64/vc15/bin/opencv_world454.dll');
       const dest = path.join(buildPath, 'opencv_world454.dll');
       await fs.copy(src, dest);
     }
