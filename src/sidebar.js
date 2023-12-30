@@ -9,6 +9,7 @@ export function openPanel(openFunc, closeFunc) {
 
     // 打开面版
     openFunc()
+    window.state.new()
 
     // 切换侧栏
     navigationBar.style.display = 'none'
@@ -17,12 +18,13 @@ export function openPanel(openFunc, closeFunc) {
 
 document.getElementById('apply-btn').addEventListener('click', () => {
     close()
-    window.state.apply()
+    window.state.save()
     navigationBar.style.display = ''
     commitBar.style.display = 'none'
 })
 document.getElementById('cancel-btn').addEventListener('click', () => {
     close()
+    window.state.cancel()
     window.img.get()
     navigationBar.style.display = ''
     commitBar.style.display = 'none'

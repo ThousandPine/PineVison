@@ -45,8 +45,9 @@ function setMenu() {
     Menu.setApplicationMenu(menu)
 }
 
+let counter = 0
 function sendImageData(sender, data) {
-    console.log('send img')
+    console.log('send img ', ++counter)
     sender.send('image:update', data ? data : state.current())
 }
 
@@ -125,14 +126,19 @@ ipcMain.on('image:watermark', (event, args) => {
 })
 
 /*  */
+ipcMain.on('state:new', (event) => {
+    state.temp = state.current()
+})
 ipcMain.on('state:save', (event) => {
     state.save()
-    state.watermark = null
+    state.temp = state.watermark = null
+})
+ipcMain.on('state:cancel', (event) => {
+    state.temp = state.watermark = null
 })
 
 class State {
     constructor(img) {
-        this.temp = img
         this.stack = [img]
         this.index = 0
     }

@@ -18,20 +18,20 @@ export function updatePanel(crop) {
 
 document.getElementById('rotate-left-btn').addEventListener('click', () => {
     window.img.rotate(false)
-    window.state.apply()
+    window.state.save()
 })
 document.getElementById('rotate-right-btn').addEventListener('click', () => {
     window.img.rotate(true)
-    window.state.apply()
+    window.state.save()
 })
 
 document.getElementById('flip-h-btn').addEventListener('click', () => {
     window.img.flip(0)
-    window.state.apply()
+    window.state.save()
 })
 document.getElementById('flip-v-btn').addEventListener('click', () => {
     window.img.flip(1)
-    window.state.apply()
+    window.state.save()
 })
 
 document.getElementById('composition-btn').addEventListener('click', () => {
