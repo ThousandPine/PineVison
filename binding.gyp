@@ -14,11 +14,11 @@
             }
         },
         "include_dirs": [
-            "D:/A/OpenCV/opencv/build/include",
+            "<!(echo %OPENCV_HOME%/include)",
             "<!@(node -p \"require('node-addon-api').include\")"
         ],
         "libraries": [
-            "D:/A/OpenCV/opencv/build/x64/vc15/lib/opencv_world454.lib",
+            "<!(echo %OPENCV_HOME%/x64/vc15/lib/opencv_world454.lib)",
         ],
     }]
 }

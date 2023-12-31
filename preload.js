@@ -1,7 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('state', {
-    apply: () => ipcRenderer.send('state:save')
+    new: () => ipcRenderer.send('state:new'),
+    save: () => ipcRenderer.send('state:save'),
+    cancel: () => ipcRenderer.send('state:cancel')
 })
 
 const img = new Image()
